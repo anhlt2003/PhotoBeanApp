@@ -41,15 +41,14 @@ namespace PhotoBeanApp.View
             this.selectedImages = selectedImages;
             images = ConvertToDrawingImages(selectedImages);
             LoadFrames();
-
         }
 
         
         private void LoadFrames()
         {
-            string framesDirectory = "C:\\Users\\Tuan Anh\\Documents\\Amazing Tech\\PhotoBean\\PhotoBeanApp\\PhotoBeanApp\\PhotoBeanApp\\Frames";
+            string framesDirectory = $"C:\\Users\\Tuan Anh\\Documents\\Amazing Tech\\PhotoBean\\PhotoBeanApp\\PhotoBeanApp\\PhotoBeanApp\\Frames";
 
-            string[] frameFiles = Directory.GetFiles(framesDirectory, $"frame_{selectedImages.Count}_*");
+            string[] frameFiles = Directory.GetFiles(framesDirectory, $"frame_*");
 
             foreach (string file in frameFiles)
             {
@@ -81,10 +80,13 @@ namespace PhotoBeanApp.View
             index = frames.Children.IndexOf(clickedFrame);
             if(index == 0)
             {
-                codeFrameType = "1a";
+                codeFrameType = "4a";
             }else if(index == 1)
             {
-                codeFrameType = "2a";
+                codeFrameType = "6a";
+            }else if(index == 2)
+            {
+                codeFrameType = "1a";
             }
             imgTemp = RenderManager.CombineImage(Frames.Instance.GetType(codeFrameType), images);
             Photo.Source = ConvertToBitmapSource(RenderManager.CombineImage(Frames.Instance.GetType(codeFrameType), images));
@@ -96,13 +98,11 @@ namespace PhotoBeanApp.View
             {
                 bitmap.Save(memory, System.Drawing.Imaging.ImageFormat.Bmp);
                 memory.Position = 0;
-
                 BitmapImage bitmapImage = new BitmapImage();
                 bitmapImage.BeginInit();
                 bitmapImage.StreamSource = memory;
                 bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
                 bitmapImage.EndInit();
-
                 return bitmapImage;
             }
         }
@@ -112,11 +112,8 @@ namespace PhotoBeanApp.View
 
             foreach (System.Windows.Controls.Image wpfImage in wpfImages)
             {
-                // Chuyển đổi từ BitmapSource sang System.Drawing.Bitmap
                 BitmapSource bitmapSource = (BitmapSource)wpfImage.Source;
                 Bitmap bitmap = BitmapFromSource(bitmapSource);
-
-                // Tạo System.Drawing.Image từ System.Drawing.Bitmap
                 System.Drawing.Image drawingImage = System.Drawing.Image.FromHbitmap(bitmap.GetHbitmap());
 
                 drawingImages.Add(drawingImage);
@@ -125,7 +122,6 @@ namespace PhotoBeanApp.View
             return drawingImages;
         }
 
-        // Hàm chuyển đổi từ BitmapSource sang Bitmap
         private Bitmap BitmapFromSource(BitmapSource bitmapsource)
         {
             Bitmap bitmap;

@@ -30,8 +30,8 @@ namespace PhotoBeanApp.View
         public event EventHandler ButtonContinueClick;
         private System.Drawing.Bitmap photo;
         private string codeFrameType;
-        private Bitmap imgTemp;
-        public BackgroundScreen(System.Drawing.Bitmap photo, String codeFrameType)
+        public Bitmap imgTemp;
+        public BackgroundScreen(Bitmap photo, string codeFrameType)
         {
             InitializeComponent();
             this.photo = photo;
@@ -41,9 +41,10 @@ namespace PhotoBeanApp.View
 
         private void LoadBackgrounds()
         {
-            string backgroundsDirectory = "C:\\Users\\Tuan Anh\\Documents\\Amazing Tech\\PhotoBean\\PhotoBeanApp\\PhotoBeanApp\\PhotoBeanApp\\Frames\\type1";
+            string backgroundsDirectory = $"C:\\Users\\Tuan Anh\\Documents\\Amazing Tech\\PhotoBean\\PhotoBeanApp\\PhotoBeanApp\\PhotoBeanApp\\Frames" +
+                $"\\{codeFrameType}";
 
-            string[] backgroundFiles = Directory.GetFiles(backgroundsDirectory, $"background*.png" +
+            string[] backgroundFiles = Directory.GetFiles(backgroundsDirectory, $"*.png" +
                 $"");
         
             foreach (string file in backgroundFiles)
@@ -57,13 +58,12 @@ namespace PhotoBeanApp.View
                 background.MouseLeftButtonDown += Background_MouseLeftButtonDown;
                 Backgrounds.Children.Add(background);
             }
-            Print.Source = ConvertToBitmapSource(RenderManager.FrameImage(Frames.Instance.GetType(codeFrameType), photo, "background_2_1.png"));
-            imgTemp = RenderManager.FrameImage(Frames.Instance.GetType(codeFrameType), photo, "background_2_1.png");
+            imgTemp = RenderManager.FrameImage(Frames.Instance.GetType(codeFrameType), photo, "default.png");
+            Print.Source = ConvertToBitmapSource(imgTemp);
         }
 
         private void ContinueButton_Click(object sender, RoutedEventArgs e)
         {
-            imgTemp.Save("C:\\Users\\Tuan Anh\\Documents\\Amazing Tech\\PhotoBean\\PhotoBeanApp\\PhotoBeanApp\\PhotoBeanApp\\Images\\img.png");
             ButtonContinueClick?.Invoke(this, EventArgs.Empty);
         }
 
@@ -71,15 +71,15 @@ namespace PhotoBeanApp.View
         {
             System.Windows.Controls.Image clickedBackground = sender as System.Windows.Controls.Image;
             string fileName = System.IO.Path.GetFileName(clickedBackground.Source.ToString());
-            Print.Source = ConvertToBitmapSource(RenderManager.FrameImage(Frames.Instance.GetType(codeFrameType), photo, fileName));
             imgTemp = RenderManager.FrameImage(Frames.Instance.GetType(codeFrameType), photo, fileName);
+            Print.Source = ConvertToBitmapSource(imgTemp);
         }
 
-        private BitmapSource ConvertToBitmapSource(System.Drawing.Bitmap bitmap)
+        private BitmapSource ConvertToBitmapSource(Bitmap bitmap)
         {
             using (MemoryStream memory = new MemoryStream())
             {
-                bitmap.Save(memory, System.Drawing.Imaging.ImageFormat.Bmp);
+                bitmap.Save(memory,ImageFormat.Bmp);
                 memory.Position = 0;
 
                 BitmapImage bitmapImage = new BitmapImage();

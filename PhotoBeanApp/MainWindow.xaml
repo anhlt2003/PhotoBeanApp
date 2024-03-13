@@ -6,7 +6,10 @@
         xmlns:local="clr-namespace:PhotoBeanApp"
         mc:Ignorable="d"
         SizeToContent="WidthAndHeight">
-    <Grid>
-        <ContentControl x:Name="contentControl"/>
+    <Grid Height="800" Width="800" Background="Red">
+        <Label Content="30"  Name="totalTime" VerticalAlignment="Top" HorizontalAlignment="Left"/>
+        <Grid>
+            <ContentControl x:Name="contentControl"/>
+        </Grid>
     </Grid>
 </Window>

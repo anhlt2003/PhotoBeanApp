@@ -15,6 +15,9 @@
     <None Remove="Backgrounds\Background_3_1.png" />
     <None Remove="Backgrounds\Fall_4_1.png" />
     <None Remove="Backgrounds\Winter_4_1.png" />
+    <None Remove="Frames\1a\default.png" />
+    <None Remove="Frames\4a\default.png" />
+    <None Remove="Frames\6a\default.png" />
     <None Remove="Frames\frame_2_1.jpg" />
     <None Remove="Frames\frame_2_1.png" />
     <None Remove="Frames\frame_2_2.png" />
@@ -22,9 +25,8 @@
     <None Remove="Frames\frame_4_2.png" />
     <None Remove="Frames\frame_4_3.png" />
     <None Remove="Frames\frame_4_4.png" />
-    <None Remove="Frames\type1\background_2_1.png" />
-    <None Remove="Frames\type1\background_2_2.png" />
-    <None Remove="Frames\type1\background_2_3.png" />
+    <None Remove="Frames\4a\background_2_2.png" />
+    <None Remove="Frames\4a\background_2_3.png" />
     <None Remove="Images\Camera.png" />
     <None Remove="Images\test1.jpg" />
     <None Remove="Images\test2.jpg" />
@@ -45,20 +47,22 @@
 
   <ItemGroup>
     <Reference Include="FrameLib">
-      <HintPath>..\..\..\..\FrameLib-master\FrameLib\bin\Debug\net6.0\FrameLib.dll</HintPath>
+      <HintPath>..\..\..\..\FrameConvert(New)\FrameLib-master\FrameLib\bin\Debug\net6.0\FrameLib.dll</HintPath>
     </Reference>
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Frames\1a\default.png" />
+    <Resource Include="Frames\6a\default.png" />
     <Resource Include="Frames\frame_2_1.jpg" />
     <Resource Include="Frames\frame_2_2.png" />
     <Resource Include="Frames\frame_4_1.png" />
     <Resource Include="Frames\frame_4_2.png" />
     <Resource Include="Frames\frame_4_3.png" />
     <Resource Include="Frames\frame_4_4.png" />
-    <Resource Include="Frames\type1\background_2_1.png" />
-    <Resource Include="Frames\type1\background_2_2.png" />
-    <Resource Include="Frames\type1\background_2_3.png" />
+    <Resource Include="Frames\4a\default.png" />
+    <Resource Include="Frames\4a\background_2_2.png" />
+    <Resource Include="Frames\4a\background_2_3.png" />
     <Resource Include="Images\Camera.png" />
     <Resource Include="Images\test1.jpg" />
     <Resource Include="Images\test2.jpg" />

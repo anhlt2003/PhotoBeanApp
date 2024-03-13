@@ -87,7 +87,7 @@ namespace PhotoBeanApp.View
             {
                 StopTimer();
                 imageControl.Source = Capture();
-                if(imageIndex == numberOfCut + 2)
+                if((numberOfCut == 1 && imageIndex == numberOfCut + 1) || imageIndex == numberOfCut + 2)
                 {
                     ContinueButton.Content = "Hoàn thành";
                 }
@@ -159,7 +159,7 @@ namespace PhotoBeanApp.View
             FilterInfoCollection videoDevices = new FilterInfoCollection(FilterCategory.VideoInputDevice);
             if (videoDevices.Count == 0)
             {
-                System.Windows.MessageBox.Show("No video devices found.");
+                MessageBox.Show("No video devices found.");
                 return;
             }
             FilterInfo videoDevice = videoDevices[0];
@@ -181,13 +181,12 @@ namespace PhotoBeanApp.View
             }
         }
 
-        private BitmapImage BitmapToImageSource(System.Drawing.Bitmap bitmap)
+        private BitmapImage BitmapToImageSource(Bitmap bitmap)
         {
             using (MemoryStream memory = new MemoryStream())
             {
-                bitmap.Save(memory, System.Drawing.Imaging.ImageFormat.Bmp);
+                bitmap.Save(memory,ImageFormat.Bmp);
                 memory.Position = 0;
-
                 BitmapImage bitmapImage = new BitmapImage();
                 bitmapImage.BeginInit();
                 bitmapImage.StreamSource = memory;

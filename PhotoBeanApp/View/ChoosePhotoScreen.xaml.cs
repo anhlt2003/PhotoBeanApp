@@ -224,7 +224,10 @@ namespace PhotoBeanApp.View
 
         private void ContinueButton_Click(object sender, RoutedEventArgs e)
         {
-            ReorderSelectedImages();
+            if(numberOfCut != 1)
+            {
+                ReorderSelectedImages();
+            }
             ButtonContinueClick?.Invoke(this, EventArgs.Empty);
         }
     }
