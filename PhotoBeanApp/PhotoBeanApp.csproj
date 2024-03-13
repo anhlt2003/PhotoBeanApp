@@ -1,0 +1,68 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net6.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Backgrounds\Background_2_1.jpg" />
+    <None Remove="Backgrounds\background_2_2.jpg" />
+    <None Remove="Backgrounds\Background_2_2.png" />
+    <None Remove="Backgrounds\background_2_3.jpg" />
+    <None Remove="Backgrounds\Background_3_1.png" />
+    <None Remove="Backgrounds\Fall_4_1.png" />
+    <None Remove="Backgrounds\Winter_4_1.png" />
+    <None Remove="Frames\frame_2_1.jpg" />
+    <None Remove="Frames\frame_2_1.png" />
+    <None Remove="Frames\frame_2_2.png" />
+    <None Remove="Frames\frame_4_1.png" />
+    <None Remove="Frames\frame_4_2.png" />
+    <None Remove="Frames\frame_4_3.png" />
+    <None Remove="Frames\frame_4_4.png" />
+    <None Remove="Frames\type1\background_2_1.png" />
+    <None Remove="Frames\type1\background_2_2.png" />
+    <None Remove="Frames\type1\background_2_3.png" />
+    <None Remove="Images\Camera.png" />
+    <None Remove="Images\test1.jpg" />
+    <None Remove="Images\test2.jpg" />
+    <None Remove="Images\test3.jpg" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Backgrounds\" />
+    <Folder Include="Fonts\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AForge.Video" Version="2.2.5" />
+    <PackageReference Include="AForge.Video.DirectShow" Version="2.2.5" />
+    <PackageReference Include="QRCoder" Version="1.4.3" />
+    <PackageReference Include="System.Drawing.Common" Version="6.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="FrameLib">
+      <HintPath>..\..\..\..\FrameLib-master\FrameLib\bin\Debug\net6.0\FrameLib.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Frames\frame_2_1.jpg" />
+    <Resource Include="Frames\frame_2_2.png" />
+    <Resource Include="Frames\frame_4_1.png" />
+    <Resource Include="Frames\frame_4_2.png" />
+    <Resource Include="Frames\frame_4_3.png" />
+    <Resource Include="Frames\frame_4_4.png" />
+    <Resource Include="Frames\type1\background_2_1.png" />
+    <Resource Include="Frames\type1\background_2_2.png" />
+    <Resource Include="Frames\type1\background_2_3.png" />
+    <Resource Include="Images\Camera.png" />
+    <Resource Include="Images\test1.jpg" />
+    <Resource Include="Images\test2.jpg" />
+    <Resource Include="Images\test3.jpg" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,19 @@
+﻿<UserControl x:Class="PhotoBeanApp.View.TakePhotoScreen"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:PhotoBeanApp.View"
+             mc:Ignorable="d" 
+             Background="#8EE1F8" Height="463" Width="773">
+    <Grid Margin="20" Background="#FFFFFF">
+        <Label Name="countdownLabel" HorizontalAlignment="Center"  VerticalAlignment="Top" Background="red" Margin="20"/>
+        <Label Name="countPhotoLable" HorizontalAlignment="Right" VerticalAlignment="Top" Background="Blue" Margin="20"/>
+        <WrapPanel HorizontalAlignment="Center" VerticalAlignment="Center" Height="250" Width="400">
+            <Image Name="imageControl" Stretch="Fill"/>
+        </WrapPanel>
+        <Button Name="StartButton" Content="Bắt đầu" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="20" Height="50" Width="50" Click="StartButton_Click"/>
+        <Button Name="ContinueButton" Content="Tiếp tục" HorizontalAlignment="Right" VerticalAlignment="Center" Height="50" Width="50" Click="ContinueButton_Click" Margin="50"/>
+        <Button Name="ReplayButton" Content="Chụp lại" HorizontalAlignment="Left" VerticalAlignment="Center" Height="50" Width="50" Click="ContinueButton_Click" Margin="50"/>
+    </Grid>
+</UserControl>
