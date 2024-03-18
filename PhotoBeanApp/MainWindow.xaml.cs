@@ -18,6 +18,7 @@ using System.Windows.Shapes;
 using System.Windows.Threading;
 using System.Xml;
 using TestImage.Frame;
+using TestImage.Utils;
 
 namespace PhotoBeanApp
 {
@@ -33,6 +34,7 @@ namespace PhotoBeanApp
         private DispatcherTimer countdownTimer;
         private int remainingTimeInSeconds = 30;
         private int currentScreenIndex;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -41,14 +43,16 @@ namespace PhotoBeanApp
             numberOfPrint = 1;
             currentScreenIndex = 0;
             imageList = new List<Image>();
-            frames = Frames.Instance;
-            frames.LoadListType();
+            List<FrameType> frameList = ReadAndParseJsonFileWithSystemTextJson.UseFileOpenReadTextWithSystemTextJson("C:\\Users\\Tuan Anh\\Documents\\Amazing Tech\\PhotoBean\\PhotoBeanApp\\PhotoBeanApp\\PhotoBeanApp\\FrameType.json");
+            frames = Frames.Instance(frameList);
             frames.LoadTypeImage("C:\\Users\\Tuan Anh\\Documents\\Amazing Tech\\PhotoBean\\PhotoBeanApp\\PhotoBeanApp\\PhotoBeanApp\\Frames\\1a", "1a");
             frames.LoadTypeImage("C:\\Users\\Tuan Anh\\Documents\\Amazing Tech\\PhotoBean\\PhotoBeanApp\\PhotoBeanApp\\PhotoBeanApp\\Frames\\4a", "4a");
             frames.LoadTypeImage("C:\\Users\\Tuan Anh\\Documents\\Amazing Tech\\PhotoBean\\PhotoBeanApp\\PhotoBeanApp\\PhotoBeanApp\\Frames\\6a", "6a");
-            WelcomeScreen welcomeScreen = new WelcomeScreen();
-            welcomeScreen.StartButtonClick += WelcomeScreen_StartButtonClick;
-            contentControl.Content = welcomeScreen;
+            //WelcomeScreen welcomeScreen = new WelcomeScreen();
+            //welcomeScreen.StartButtonClick += WelcomeScreen_StartButtonClick;
+            //contentControl.Content = welcomeScreen;
+            RealtimeScreen realtimeScreen = new RealtimeScreen();
+            contentControl.Content = realtimeScreen;
         }
         private void InitializeTimer()
         {
@@ -166,7 +170,7 @@ namespace PhotoBeanApp
         {
             ChoosePhotoScreen choosePhotoScreen = (ChoosePhotoScreen)sender;
             imageList = choosePhotoScreen.selectedImages;
-            FrameScreen frameScreen = new FrameScreen(imageList);
+            FrameScreen frameScreen = new FrameScreen(imageList, frames);
             frameScreen.ButtonContinueClick += FrameScreen_ButtonContinueClick;
             contentControl.Content = frameScreen;
             StartTimer();
@@ -177,7 +181,8 @@ namespace PhotoBeanApp
             FrameScreen frameScreen = (FrameScreen)sender;
             System.Drawing.Bitmap image = frameScreen.imgTemp;
             string codeFrameType = frameScreen.codeFrameType;
-            BackgroundScreen backgroundScreen = new BackgroundScreen(image, codeFrameType);
+            BackgroundScreen backgroundScreen = new BackgroundScreen(image, codeFrameType, frames);
+            backgroundScreen.frameList = frames;
             backgroundScreen.ButtonContinueClick += BackgroundScreen_ButtonContinueClick;
             contentControl.Content = backgroundScreen;
             StartTimer();

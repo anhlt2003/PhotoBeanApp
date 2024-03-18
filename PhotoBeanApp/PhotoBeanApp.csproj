@@ -8,13 +8,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Backgrounds\Background_2_1.jpg" />
-    <None Remove="Backgrounds\background_2_2.jpg" />
-    <None Remove="Backgrounds\Background_2_2.png" />
-    <None Remove="Backgrounds\background_2_3.jpg" />
-    <None Remove="Backgrounds\Background_3_1.png" />
-    <None Remove="Backgrounds\Fall_4_1.png" />
-    <None Remove="Backgrounds\Winter_4_1.png" />
     <None Remove="Frames\1a\default.png" />
     <None Remove="Frames\4a\default.png" />
     <None Remove="Frames\6a\default.png" />
@@ -34,13 +27,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Backgrounds\" />
     <Folder Include="Fonts\" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="AForge.Video" Version="2.2.5" />
     <PackageReference Include="AForge.Video.DirectShow" Version="2.2.5" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="QRCoder" Version="1.4.3" />
     <PackageReference Include="System.Drawing.Common" Version="6.0.0" />
   </ItemGroup>

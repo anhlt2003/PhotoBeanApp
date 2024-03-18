@@ -28,14 +28,16 @@ namespace PhotoBeanApp.View
     public partial class BackgroundScreen : UserControl
     {
         public event EventHandler ButtonContinueClick;
-        private System.Drawing.Bitmap photo;
+        private Bitmap photo;
         private string codeFrameType;
         public Bitmap imgTemp;
-        public BackgroundScreen(Bitmap photo, string codeFrameType)
+        public Frames frameList;
+        public BackgroundScreen(Bitmap photo, string codeFrameType, Frames frameList)
         {
             InitializeComponent();
             this.photo = photo;
             this.codeFrameType = codeFrameType;
+            this.frameList = frameList; 
             LoadBackgrounds();
         }
 
@@ -58,7 +60,7 @@ namespace PhotoBeanApp.View
                 background.MouseLeftButtonDown += Background_MouseLeftButtonDown;
                 Backgrounds.Children.Add(background);
             }
-            imgTemp = RenderManager.FrameImage(Frames.Instance.GetType(codeFrameType), photo, "default.png");
+            imgTemp = RenderManager.FrameImage(frameList.GetType(codeFrameType), photo, "default.png");
             Print.Source = ConvertToBitmapSource(imgTemp);
         }
 
@@ -71,7 +73,7 @@ namespace PhotoBeanApp.View
         {
             System.Windows.Controls.Image clickedBackground = sender as System.Windows.Controls.Image;
             string fileName = System.IO.Path.GetFileName(clickedBackground.Source.ToString());
-            imgTemp = RenderManager.FrameImage(Frames.Instance.GetType(codeFrameType), photo, fileName);
+            imgTemp = RenderManager.FrameImage(frameList.GetType(codeFrameType), photo, fileName);
             Print.Source = ConvertToBitmapSource(imgTemp);
         }
 
@@ -81,13 +83,11 @@ namespace PhotoBeanApp.View
             {
                 bitmap.Save(memory,ImageFormat.Bmp);
                 memory.Position = 0;
-
                 BitmapImage bitmapImage = new BitmapImage();
                 bitmapImage.BeginInit();
                 bitmapImage.StreamSource = memory;
                 bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
                 bitmapImage.EndInit();
-
                 return bitmapImage;
             }
         }

@@ -30,20 +30,21 @@ namespace PhotoBeanApp.View
         public List<System.Windows.Controls.Image> selectedImages;
         public int index;
         List<System.Drawing.Image> images;
-        public System.Drawing.Bitmap imgTemp;
+        public Bitmap imgTemp;
         public string codeFrameType;
-        public FrameScreen(List<System.Windows.Controls.Image> selectedImages)
+        public Frames frameList;
+        public FrameScreen(List<System.Windows.Controls.Image> selectedImages, Frames frameList)
         {
             InitializeComponent();
             image = new System.Windows.Controls.Image();
             index = 0;
-            codeFrameType = "1a";
+            codeFrameType = "4a";
+            this.frameList = frameList;
             this.selectedImages = selectedImages;
             images = ConvertToDrawingImages(selectedImages);
             LoadFrames();
         }
 
-        
         private void LoadFrames()
         {
             string framesDirectory = $"C:\\Users\\Tuan Anh\\Documents\\Amazing Tech\\PhotoBean\\PhotoBeanApp\\PhotoBeanApp\\PhotoBeanApp\\Frames";
@@ -59,20 +60,17 @@ namespace PhotoBeanApp.View
                 frame.Height = 60;
                 frame.Stretch = Stretch.Uniform;
                 frame.MouseLeftButtonDown += Frame_MouseLeftButtonDown;
-                frames.Children.Add(frame); 
+                frames.Children.Add(frame);
             }
-            imgTemp = RenderManager.CombineImage(Frames.Instance.GetType("1a"), images);
-            Photo.Source =ConvertToBitmapSource(RenderManager.CombineImage(Frames.Instance.GetType("1a"), images));
+            imgTemp = RenderManager.CombineImage(frameList.GetType("4a"), images);
+            Photo.Source = ConvertToBitmapSource(RenderManager.CombineImage(frameList.GetType("4a"), images));
         }
-
-
 
         private void ContinueButton_Click(object sender, RoutedEventArgs e)
         {
             ButtonContinueClick?.Invoke(this, EventArgs.Empty);
         }
 
-        
         private void Frame_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             System.Windows.Controls.Image clickedFrame = sender as System.Windows.Controls.Image;
@@ -88,11 +86,10 @@ namespace PhotoBeanApp.View
             {
                 codeFrameType = "1a";
             }
-            imgTemp = RenderManager.CombineImage(Frames.Instance.GetType(codeFrameType), images);
-            Photo.Source = ConvertToBitmapSource(RenderManager.CombineImage(Frames.Instance.GetType(codeFrameType), images));
+            imgTemp = RenderManager.CombineImage(frameList.GetType(codeFrameType), images);
+            Photo.Source = ConvertToBitmapSource(RenderManager.CombineImage(frameList.GetType(codeFrameType), images));
         }
-
-        private BitmapSource ConvertToBitmapSource(System.Drawing.Bitmap bitmap)
+        private BitmapSource ConvertToBitmapSource(Bitmap bitmap)
         {
             using (MemoryStream memory = new MemoryStream())
             {

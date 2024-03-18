@@ -144,10 +144,7 @@ namespace PhotoBeanApp.View
                     MessageBox.Show("Bạn đã chọn đủ số lượng ảnh.");
                     return;
                 }
-                else
-                {
 
-                }
                 if (!ChoosePhoto.Children.Contains(clickedImage))
                 {
                     Photos.Children.Remove(clickedImage);
