@@ -8,31 +8,24 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Frames\1a\default.png" />
-    <None Remove="Frames\4a\default.png" />
-    <None Remove="Frames\6a\default.png" />
-    <None Remove="Frames\frame_2_1.jpg" />
+    <None Remove="Frames\1cut\1a\default.png" />
+    <None Remove="Frames\4cut\4a\default.png" />
+    <None Remove="Frames\6cut\6a\default.png" />
     <None Remove="Frames\frame_2_1.png" />
-    <None Remove="Frames\frame_2_2.png" />
-    <None Remove="Frames\frame_4_1.png" />
-    <None Remove="Frames\frame_4_2.png" />
-    <None Remove="Frames\frame_4_3.png" />
-    <None Remove="Frames\frame_4_4.png" />
-    <None Remove="Frames\4a\background_2_2.png" />
-    <None Remove="Frames\4a\background_2_3.png" />
+    <None Remove="Frames\4cut\4a\background_2_2.png" />
+    <None Remove="Frames\4cut\4a\background_2_3.png" />
     <None Remove="Images\Camera.png" />
-    <None Remove="Images\test1.jpg" />
-    <None Remove="Images\test2.jpg" />
-    <None Remove="Images\test3.jpg" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="Fonts\" />
+    <Folder Include="Frames\6cut\6b\" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="AForge.Video" Version="2.2.5" />
     <PackageReference Include="AForge.Video.DirectShow" Version="2.2.5" />
+    <PackageReference Include="FontAwesome.WPF" Version="4.7.0.9" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="QRCoder" Version="1.4.3" />
     <PackageReference Include="System.Drawing.Common" Version="6.0.0" />
@@ -45,21 +38,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="Frames\1a\default.png" />
-    <Resource Include="Frames\6a\default.png" />
-    <Resource Include="Frames\frame_2_1.jpg" />
-    <Resource Include="Frames\frame_2_2.png" />
-    <Resource Include="Frames\frame_4_1.png" />
-    <Resource Include="Frames\frame_4_2.png" />
-    <Resource Include="Frames\frame_4_3.png" />
-    <Resource Include="Frames\frame_4_4.png" />
-    <Resource Include="Frames\4a\default.png" />
-    <Resource Include="Frames\4a\background_2_2.png" />
-    <Resource Include="Frames\4a\background_2_3.png" />
+    <Resource Include="Frames\1cut\1a\default.png" />
+    <Resource Include="Frames\6cut\6a\default.png" />
+    <Resource Include="Frames\4cut\4a\default.png" />
+    <Resource Include="Frames\4cut\4a\background_2_2.png" />
+    <Resource Include="Frames\4cut\4a\background_2_3.png" />
     <Resource Include="Images\Camera.png" />
-    <Resource Include="Images\test1.jpg" />
-    <Resource Include="Images\test2.jpg" />
-    <Resource Include="Images\test3.jpg" />
   </ItemGroup>
 
 </Project>

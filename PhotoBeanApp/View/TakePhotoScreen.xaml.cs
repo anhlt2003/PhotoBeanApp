@@ -28,7 +28,7 @@ namespace PhotoBeanApp.View
     public partial class TakePhotoScreen : UserControl
     {
         private DispatcherTimer countdownTimer;
-        private int remainingTimeInSeconds = 3;
+        private int remainingTimeInSeconds = 1;
         private int imageIndex = 1;
         private bool isTimerRunning = false;
         private int numberOfCut, numberOfPrint;
@@ -67,7 +67,7 @@ namespace PhotoBeanApp.View
         private void StartTimer()
         {
             StartCamera();
-            remainingTimeInSeconds = 3;
+            remainingTimeInSeconds = 1;
             countdownLabel.Visibility = Visibility.Visible;
             countdownLabel.Content = remainingTimeInSeconds.ToString();
             countdownTimer.Start();

@@ -52,5 +52,32 @@
       "AspectRatio": 0,
       "DisplayOrder": 0
     }
+  },
+  {
+    "Width": 1200,
+    "Height": 1800,
+    "Column": 2,
+    "Row": 3,
+    "Name": "Frame 6 hinh",
+    "Code": "6b",
+    "Description": null,
+    "BackgroundImages": null,
+    "ImageInFrame": {
+      "Width": 526,
+      "Height": 526,
+      "MarginTop": 39,
+      "MarginLeft": 34,
+      "MarginRight": 34,
+      "MarginBottom": 39,
+      "TopLeft": {
+        "IsEmpty": true,
+        "X": 0.0,
+        "Y": 0.0
+      },
+      "Padding": 0,
+      "Image": null,
+      "AspectRatio": 0,
+      "DisplayOrder": 0
+    }
   }
 ]

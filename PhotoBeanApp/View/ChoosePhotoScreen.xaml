@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:PhotoBeanApp.View"
              mc:Ignorable="d" 
              Background="#8EE1F8" Height="463" Width="773">
-    <Grid Background="#FFFFFF" Margin="20">
+    <Grid  Margin="20">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="*" />

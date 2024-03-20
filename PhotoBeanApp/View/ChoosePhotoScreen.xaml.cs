@@ -83,7 +83,7 @@ namespace PhotoBeanApp.View
 
             ChoosePhoto.HorizontalAlignment = HorizontalAlignment.Center;
             ChoosePhoto.VerticalAlignment = VerticalAlignment.Center;
-            ChoosePhoto.Background = Brushes.Red;
+            ChoosePhoto.Background = Brushes.White;
         }
         private void SetUpRightGrid()
         {
@@ -106,7 +106,6 @@ namespace PhotoBeanApp.View
 
             Photos.HorizontalAlignment = HorizontalAlignment.Center;
             Photos.VerticalAlignment = VerticalAlignment.Center;
-            Photos.Background = Brushes.Blue;
         }
 
         private void LoadPhotos(List<Image> imageList)

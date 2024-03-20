@@ -1,21 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Drawing;
 using System.IO;
-using System.Linq;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using TestImage.Frame;
 using TestImage.Render;
 namespace PhotoBeanApp.View
@@ -33,28 +24,30 @@ namespace PhotoBeanApp.View
         public Bitmap imgTemp;
         public string codeFrameType;
         public Frames frameList;
-        public FrameScreen(List<System.Windows.Controls.Image> selectedImages, Frames frameList)
+        public int numberOfCut;
+        public FrameScreen(List<System.Windows.Controls.Image> selectedImages, Frames frameList, int numberOfCut)
         {
             InitializeComponent();
             image = new System.Windows.Controls.Image();
             index = 0;
-            codeFrameType = "4a";
             this.frameList = frameList;
             this.selectedImages = selectedImages;
+            this.numberOfCut = numberOfCut;
+            codeFrameType = $"{numberOfCut}a";
             images = ConvertToDrawingImages(selectedImages);
             LoadFrames();
         }
 
         private void LoadFrames()
         {
-            string framesDirectory = $"C:\\Users\\Tuan Anh\\Documents\\Amazing Tech\\PhotoBean\\PhotoBeanApp\\PhotoBeanApp\\PhotoBeanApp\\Frames";
+            string framesDirectory = $"C:\\Users\\Tuan Anh\\Documents\\Amazing Tech\\PhotoBean\\PhotoBeanApp\\PhotoBeanApp\\PhotoBeanApp\\Frames\\{numberOfCut}cut";
 
-            string[] frameFiles = Directory.GetFiles(framesDirectory, $"frame_*");
+            List<string> defaultFramesList = GetDefaultFramesList(framesDirectory);
 
-            foreach (string file in frameFiles)
+            foreach (string frameFile in defaultFramesList)
             {
                 System.Windows.Controls.Image frame = new System.Windows.Controls.Image();
-                frame.Source = new BitmapImage(new Uri(file));
+                frame.Source = new BitmapImage(new Uri(frameFile));
                 double itemWidth = frames.Width / 2;
                 frame.Width = itemWidth;
                 frame.Height = 60;
@@ -62,10 +55,21 @@ namespace PhotoBeanApp.View
                 frame.MouseLeftButtonDown += Frame_MouseLeftButtonDown;
                 frames.Children.Add(frame);
             }
-            imgTemp = RenderManager.CombineImage(frameList.GetType("4a"), images);
-            Photo.Source = ConvertToBitmapSource(RenderManager.CombineImage(frameList.GetType("4a"), images));
+            imgTemp = RenderManager.CombineImage(frameList.GetType($"{numberOfCut}a"), images);
+            Photo.Source = ConvertToBitmapSource(RenderManager.CombineImage(frameList.GetType($"{numberOfCut}a"), images));
         }
 
+        private List<string> GetDefaultFramesList(string directory)
+        {
+            List<string> defaultframeLists = new List<string>();
+
+            foreach (string file in Directory.GetFiles(directory, "*.png", SearchOption.AllDirectories))
+            {
+                defaultframeLists.Add(file);
+            }
+
+            return defaultframeLists;
+        }
         private void ContinueButton_Click(object sender, RoutedEventArgs e)
         {
             ButtonContinueClick?.Invoke(this, EventArgs.Empty);
@@ -78,13 +82,16 @@ namespace PhotoBeanApp.View
             index = frames.Children.IndexOf(clickedFrame);
             if(index == 0)
             {
-                codeFrameType = "4a";
+                codeFrameType = $"{numberOfCut}a";
             }else if(index == 1)
             {
-                codeFrameType = "6a";
+                codeFrameType = $"{numberOfCut}b";
             }else if(index == 2)
             {
-                codeFrameType = "1a";
+                codeFrameType = $"{numberOfCut}c";
+            }else if (index==3)
+            {
+                codeFrameType = $"{numberOfCut}d";
             }
             imgTemp = RenderManager.CombineImage(frameList.GetType(codeFrameType), images);
             Photo.Source = ConvertToBitmapSource(RenderManager.CombineImage(frameList.GetType(codeFrameType), images));

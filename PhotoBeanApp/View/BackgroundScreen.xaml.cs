@@ -1,22 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
-using System.Linq;
-using System.Media;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using TestImage.Frame;
 using TestImage.Render;
 
@@ -32,22 +22,21 @@ namespace PhotoBeanApp.View
         private string codeFrameType;
         public Bitmap imgTemp;
         public Frames frameList;
-        public BackgroundScreen(Bitmap photo, string codeFrameType, Frames frameList)
+        public int numberOfCut;
+        public BackgroundScreen(Bitmap photo, string codeFrameType, Frames frameList, int numberOfCut)
         {
             InitializeComponent();
             this.photo = photo;
             this.codeFrameType = codeFrameType;
             this.frameList = frameList; 
+            this.numberOfCut = numberOfCut;
             LoadBackgrounds();
         }
 
         private void LoadBackgrounds()
         {
-            string backgroundsDirectory = $"C:\\Users\\Tuan Anh\\Documents\\Amazing Tech\\PhotoBean\\PhotoBeanApp\\PhotoBeanApp\\PhotoBeanApp\\Frames" +
-                $"\\{codeFrameType}";
-
-            string[] backgroundFiles = Directory.GetFiles(backgroundsDirectory, $"*.png" +
-                $"");
+            string backgroundsDirectory = $"C:\\Users\\Tuan Anh\\Documents\\Amazing Tech\\PhotoBean\\PhotoBeanApp\\PhotoBeanApp\\PhotoBeanApp\\Frames\\{numberOfCut}cut\\{codeFrameType}";
+            string[] backgroundFiles = Directory.GetFiles(backgroundsDirectory, $"*.png");
         
             foreach (string file in backgroundFiles)
             {

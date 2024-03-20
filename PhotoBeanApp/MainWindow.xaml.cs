@@ -1,22 +1,9 @@
 ﻿using PhotoBeanApp.View;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Controls.Primitives;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using System.Windows.Threading;
-using System.Xml;
 using TestImage.Frame;
 using TestImage.Utils;
 
@@ -45,9 +32,10 @@ namespace PhotoBeanApp
             imageList = new List<Image>();
             List<FrameType> frameList = ReadAndParseJsonFileWithSystemTextJson.UseFileOpenReadTextWithSystemTextJson("C:\\Users\\Tuan Anh\\Documents\\Amazing Tech\\PhotoBean\\PhotoBeanApp\\PhotoBeanApp\\PhotoBeanApp\\FrameType.json");
             frames = Frames.Instance(frameList);
-            frames.LoadTypeImage("C:\\Users\\Tuan Anh\\Documents\\Amazing Tech\\PhotoBean\\PhotoBeanApp\\PhotoBeanApp\\PhotoBeanApp\\Frames\\1a", "1a");
-            frames.LoadTypeImage("C:\\Users\\Tuan Anh\\Documents\\Amazing Tech\\PhotoBean\\PhotoBeanApp\\PhotoBeanApp\\PhotoBeanApp\\Frames\\4a", "4a");
-            frames.LoadTypeImage("C:\\Users\\Tuan Anh\\Documents\\Amazing Tech\\PhotoBean\\PhotoBeanApp\\PhotoBeanApp\\PhotoBeanApp\\Frames\\6a", "6a");
+            frames.LoadTypeImage("C:\\Users\\Tuan Anh\\Documents\\Amazing Tech\\PhotoBean\\PhotoBeanApp\\PhotoBeanApp\\PhotoBeanApp\\Frames\\1cut\\1a", "1a");
+            frames.LoadTypeImage("C:\\Users\\Tuan Anh\\Documents\\Amazing Tech\\PhotoBean\\PhotoBeanApp\\PhotoBeanApp\\PhotoBeanApp\\Frames\\4cut\\4a", "4a");
+            frames.LoadTypeImage("C:\\Users\\Tuan Anh\\Documents\\Amazing Tech\\PhotoBean\\PhotoBeanApp\\PhotoBeanApp\\PhotoBeanApp\\Frames\\6cut\\6a", "6a");
+            frames.LoadTypeImage("C:\\Users\\Tuan Anh\\Documents\\Amazing Tech\\PhotoBean\\PhotoBeanApp\\PhotoBeanApp\\PhotoBeanApp\\Frames\\6cut\\6b", "6b");
             //WelcomeScreen welcomeScreen = new WelcomeScreen();
             //welcomeScreen.StartButtonClick += WelcomeScreen_StartButtonClick;
             //contentControl.Content = welcomeScreen;
@@ -170,7 +158,7 @@ namespace PhotoBeanApp
         {
             ChoosePhotoScreen choosePhotoScreen = (ChoosePhotoScreen)sender;
             imageList = choosePhotoScreen.selectedImages;
-            FrameScreen frameScreen = new FrameScreen(imageList, frames);
+            FrameScreen frameScreen = new FrameScreen(imageList, frames, numberOfCut);
             frameScreen.ButtonContinueClick += FrameScreen_ButtonContinueClick;
             contentControl.Content = frameScreen;
             StartTimer();
@@ -181,8 +169,7 @@ namespace PhotoBeanApp
             FrameScreen frameScreen = (FrameScreen)sender;
             System.Drawing.Bitmap image = frameScreen.imgTemp;
             string codeFrameType = frameScreen.codeFrameType;
-            BackgroundScreen backgroundScreen = new BackgroundScreen(image, codeFrameType, frames);
-            backgroundScreen.frameList = frames;
+            BackgroundScreen backgroundScreen = new BackgroundScreen(image, codeFrameType, frames, numberOfCut);
             backgroundScreen.ButtonContinueClick += BackgroundScreen_ButtonContinueClick;
             contentControl.Content = backgroundScreen;
             StartTimer();
