@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
-using System.Windows.Threading;
 using FontAwesome.WPF;
 
 namespace PhotoBeanApp.View
@@ -15,7 +13,6 @@ namespace PhotoBeanApp.View
     /// </summary>
     public partial class RealtimeScreen : UserControl
     {
-        private DispatcherTimer timer;
         public RealtimeScreen()
         {
             InitializeComponent();

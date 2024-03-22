@@ -35,35 +35,71 @@ namespace PhotoBeanApp.View
             this.numberOfCut = numberOfCut;
             codeFrameType = $"{numberOfCut}a";
             images = ConvertToDrawingImages(selectedImages);
+            SetUpRightGrid();
             LoadFrames();
-        }
 
-        private void LoadFrames()
+        }
+        private void SetUpRightGrid()
         {
-            string framesDirectory = $"C:\\Users\\Tuan Anh\\Documents\\Amazing Tech\\PhotoBean\\PhotoBeanApp\\PhotoBeanApp\\PhotoBeanApp\\Frames\\{numberOfCut}cut";
+            double columnWidth = 250;
+            double rowHeight = 250;
+            string currentDirectory = Directory.GetCurrentDirectory();
+            string projectDirectory = Directory.GetParent(currentDirectory).Parent.Parent.FullName;
+            string framesDirectory = Path.Combine(projectDirectory, $"Frames\\{numberOfCut}cut");
 
             List<string> defaultFramesList = GetDefaultFramesList(framesDirectory);
+            for (int i = 0; i < 2; i++)
+            {
+                ColumnDefinition columnDefinition = new ColumnDefinition();
+                columnDefinition.Width = new GridLength(columnWidth, GridUnitType.Pixel);
+                frames.ColumnDefinitions.Add(columnDefinition);
+            }
 
+            for (int i = 0; i < defaultFramesList.Count/2 + 1; i++)
+            {
+                RowDefinition rowDefinition = new RowDefinition();
+                rowDefinition.Height = new GridLength(rowHeight, GridUnitType.Pixel);
+                frames.RowDefinitions.Add(rowDefinition);
+            }
+            frames.HorizontalAlignment = HorizontalAlignment.Center;
+            frames.VerticalAlignment = VerticalAlignment.Center;
+        }
+        private void LoadFrames()
+        {
+            string currentDirectory = Directory.GetCurrentDirectory();
+            string projectDirectory = Directory.GetParent(currentDirectory).Parent.Parent.FullName;
+            string framesDirectory = Path.Combine(projectDirectory, $"Frames\\{numberOfCut}cut");
+            List<string> defaultFramesList = GetDefaultFramesList(framesDirectory);
+            int columnIndex = 0;
+            int rowIndex = 0;
             foreach (string frameFile in defaultFramesList)
             {
                 System.Windows.Controls.Image frame = new System.Windows.Controls.Image();
                 frame.Source = new BitmapImage(new Uri(frameFile));
-                double itemWidth = frames.Width / 2;
-                frame.Width = itemWidth;
-                frame.Height = 60;
                 frame.Stretch = Stretch.Uniform;
-                frame.MouseLeftButtonDown += Frame_MouseLeftButtonDown;
+                frame.Margin = new Thickness(10);
+
                 frames.Children.Add(frame);
+                Grid.SetColumn(frame, columnIndex);
+                Grid.SetRow(frame, rowIndex);
+                frame.MouseLeftButtonDown += Frame_MouseLeftButtonDown;
+                columnIndex++;
+                if (columnIndex == 2)
+                {
+                    columnIndex = 0;
+                    rowIndex++;
+                }
             }
             imgTemp = RenderManager.CombineImage(frameList.GetType($"{numberOfCut}a"), images);
             Photo.Source = ConvertToBitmapSource(RenderManager.CombineImage(frameList.GetType($"{numberOfCut}a"), images));
         }
 
+
         private List<string> GetDefaultFramesList(string directory)
         {
             List<string> defaultframeLists = new List<string>();
 
-            foreach (string file in Directory.GetFiles(directory, "*.png", SearchOption.AllDirectories))
+            foreach (string file in Directory.GetFiles(directory, "default.png", SearchOption.AllDirectories))
             {
                 defaultframeLists.Add(file);
             }

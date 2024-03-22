@@ -49,8 +49,8 @@ namespace PhotoBeanApp.View
 
         private void SetUpLeftGrid()
         {
-            double columnWidth = 100;
-            double rowHeight = 100;
+            double columnWidth = 200;
+            double rowHeight = 200;
             ChoosePhoto.ColumnDefinitions.Clear();
             ChoosePhoto.RowDefinitions.Clear();
 
@@ -87,8 +87,8 @@ namespace PhotoBeanApp.View
         }
         private void SetUpRightGrid()
         {
-            double columnWidth = 70;
-            double rowHeight = 70;
+            double columnWidth = 100;
+            double rowHeight = 100;
 
             for (int i = 0; i < numberOfColumns; i++)
             {

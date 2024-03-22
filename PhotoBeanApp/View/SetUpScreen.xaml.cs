@@ -77,14 +77,14 @@ namespace PhotoBeanApp.View
 
         private void increaseButton_Click(object sender, RoutedEventArgs e)
         {
-            numberOfPrint = Int32.Parse(printLable.Content.ToString());
-            printLable.Content = $"{++numberOfPrint}";
+            numberOfPrint = Int32.Parse(printLabel.Content.ToString());
+            printLabel.Content = $"{++numberOfPrint}";
         }
 
         private void decreaseButton_Click(object sender, RoutedEventArgs e)
         {
-            numberOfPrint = (int)printLable.Content;
-            printLable.Content = $"{--numberOfPrint}";
+            numberOfPrint = Int32.Parse(printLabel.Content.ToString());
+            printLabel.Content = $"{--numberOfPrint}";
         }
     }
 }

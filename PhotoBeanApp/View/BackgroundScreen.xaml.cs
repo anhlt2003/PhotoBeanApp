@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -30,24 +32,59 @@ namespace PhotoBeanApp.View
             this.codeFrameType = codeFrameType;
             this.frameList = frameList; 
             this.numberOfCut = numberOfCut;
+            SetUpRightGrid();
             LoadBackgrounds();
         }
+        private void SetUpRightGrid()
+        {
+            double columnWidth = 250;
+            double rowHeight = 250;
+            string currentDirectory = Directory.GetCurrentDirectory();
+            string projectDirectory = Directory.GetParent(currentDirectory).Parent.Parent.FullName;
+            string backgroundsDirectory = Path.Combine(projectDirectory, $"Frames\\{numberOfCut}cut\\{codeFrameType}");
+            string[] backgroundFiles = Directory.GetFiles(backgroundsDirectory, $"*.png");
+            for (int i = 0; i < 2; i++)
+            {
+                ColumnDefinition columnDefinition = new ColumnDefinition();
+                columnDefinition.Width = new GridLength(columnWidth, GridUnitType.Pixel);
+                Backgrounds.ColumnDefinitions.Add(columnDefinition);
+            }
 
+            for (int i = 0; i < backgroundFiles.Count()/ 2 + 1; i++)
+            {
+                RowDefinition rowDefinition = new RowDefinition();
+                rowDefinition.Height = new GridLength(rowHeight, GridUnitType.Pixel);
+                Backgrounds.RowDefinitions.Add(rowDefinition);
+            }
+            Backgrounds.HorizontalAlignment = HorizontalAlignment.Center;
+            Backgrounds.VerticalAlignment = VerticalAlignment.Center;
+        }
         private void LoadBackgrounds()
         {
-            string backgroundsDirectory = $"C:\\Users\\Tuan Anh\\Documents\\Amazing Tech\\PhotoBean\\PhotoBeanApp\\PhotoBeanApp\\PhotoBeanApp\\Frames\\{numberOfCut}cut\\{codeFrameType}";
+
+            string currentDirectory = Directory.GetCurrentDirectory();
+            string projectDirectory = Directory.GetParent(currentDirectory).Parent.Parent.FullName;
+            string backgroundsDirectory = Path.Combine(projectDirectory, $"Frames\\{numberOfCut}cut\\{codeFrameType}");
             string[] backgroundFiles = Directory.GetFiles(backgroundsDirectory, $"*.png");
-        
+            int columnIndex = 0;
+            int rowIndex = 0;
             foreach (string file in backgroundFiles)
             {
-                System.Windows.Controls.Image background = new System.Windows.Controls.Image();
-                background.Source = new BitmapImage(new Uri(file));
-                double itemWidth = background.Width / 2;
-                background.Width = itemWidth;
-                background.Height = 60;
-                background.Stretch = Stretch.Uniform;
-                background.MouseLeftButtonDown += Background_MouseLeftButtonDown;
-                Backgrounds.Children.Add(background);
+                System.Windows.Controls.Image frame = new System.Windows.Controls.Image();
+                frame.Source = new BitmapImage(new Uri(file));
+                frame.Stretch = Stretch.Uniform;
+                frame.Margin = new Thickness(10);
+
+                Backgrounds.Children.Add(frame);
+                Grid.SetColumn(frame, columnIndex);
+                Grid.SetRow(frame, rowIndex);
+                frame.MouseLeftButtonDown += Background_MouseLeftButtonDown;
+                columnIndex++;
+                if (columnIndex == 2)
+                {
+                    columnIndex = 0;
+                    rowIndex++;
+                }
             }
             imgTemp = RenderManager.FrameImage(frameList.GetType(codeFrameType), photo, "default.png");
             Print.Source = ConvertToBitmapSource(imgTemp);

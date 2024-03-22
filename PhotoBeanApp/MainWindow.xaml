@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PhotoBeanApp"
         mc:Ignorable="d"
-        SizeToContent="WidthAndHeight">
+        WindowStyle="None"
+        WindowState="Maximized">
     <Grid>
         <Label Content="30"  Name="totalTime" VerticalAlignment="Top" HorizontalAlignment="Left"/>
         <Grid>

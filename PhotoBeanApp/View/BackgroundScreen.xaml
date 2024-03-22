@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:PhotoBeanApp.View"
              mc:Ignorable="d" 
-             Background="#8EE1F8" Height="463" Width="773">
+             Background="#8EE1F8">
     <Grid Background="#FFFFFF" Margin="20">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
@@ -13,13 +13,13 @@
         </Grid.ColumnDefinitions>
         <Grid Name="LeftGrid" Grid.Column="0">
             <WrapPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-                <Image Name="Print" MaxHeight="300" MaxWidth="300"/>
+                <Image Name="Print"/>
             </WrapPanel>
         </Grid>
         <Grid Name="RightGrid" Grid.Column="1">
             <Label Content="Background" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,10,0,0"/>
-            <WrapPanel Name="Backgrounds" Margin="20" Height="350" Width="300">
-            </WrapPanel>
+            <Grid Name="Backgrounds" Margin="20">
+            </Grid>
             <Button Name="ContinueButton" Content="Tiếp tục" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="20" Click="ContinueButton_Click" />
         </Grid>
     </Grid>

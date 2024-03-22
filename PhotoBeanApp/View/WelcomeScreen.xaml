@@ -3,30 +3,23 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:PhotoBeanApp.View"
              mc:Ignorable="d"
-             Background="#8EE1F8" Height="463" Width="773">
-    <Grid>
-        <Label Content="Photo Bean" FontSize="55" Foreground="#FFFFFF" HorizontalAlignment="Center" VerticalAlignment="Top"/>
-        <Button Content="Bắt đầu" FontSize="40"  Width="208" Height="61" HorizontalAlignment="Center" VerticalAlignment="Bottom"
-                 Click="StartButton_Click" Margin="0,0,0,50">
-            <Button.Style>
-                <Style TargetType="Button">
-                    <Setter Property="Template">
-                        <Setter.Value>
-                            <ControlTemplate TargetType="Button">
-                                <Border Background="#F4F69D" 
-                                BorderBrush="{TemplateBinding BorderBrush}"
-                                BorderThickness="{TemplateBinding BorderThickness}"
-                                CornerRadius="15">
-                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                </Border>
-                            </ControlTemplate>
-                        </Setter.Value>
-                    </Setter>
-                </Style>
-            </Button.Style>
-        </Button>
-        <Image HorizontalAlignment="Center" VerticalAlignment="Top" Height="226" Width="248" Source="/Images/Camera.png" Margin="0,102,0,0"/>
+             Background="White">
+    <Grid Background="#8EE1F8" Margin="0">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="500"/>
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="400"/>
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <Label Content="Photo Bean" FontSize="55" Foreground="#FFFFFF" HorizontalAlignment="Center" VerticalAlignment ="Center"  Grid.Column="1" Grid.Row="0"/>
+        <Button Content="Bắt đầu" FontSize="40"  Width="208" Height="61" HorizontalAlignment="Center" VerticalAlignment="Center"
+                Click="StartButton_Click" Grid.Column="1" Grid.Row="2"/>
+        <Image HorizontalAlignment="Center" VerticalAlignment="Center" Source="/Images/Camera.png"  Stretch="Fill" Grid.Column="1" Grid.Row="1"/>
     </Grid>
 </UserControl>

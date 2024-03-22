@@ -1,6 +1,7 @@
 ﻿using PhotoBeanApp.View;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Threading;
@@ -21,7 +22,7 @@ namespace PhotoBeanApp
         private DispatcherTimer countdownTimer;
         private int remainingTimeInSeconds = 30;
         private int currentScreenIndex;
-
+            
         public MainWindow()
         {
             InitializeComponent();
@@ -30,17 +31,27 @@ namespace PhotoBeanApp
             numberOfPrint = 1;
             currentScreenIndex = 0;
             imageList = new List<Image>();
-            List<FrameType> frameList = ReadAndParseJsonFileWithSystemTextJson.UseFileOpenReadTextWithSystemTextJson("C:\\Users\\Tuan Anh\\Documents\\Amazing Tech\\PhotoBean\\PhotoBeanApp\\PhotoBeanApp\\PhotoBeanApp\\FrameType.json");
+            string currentDirectory = Directory.GetCurrentDirectory();
+            string projectDirectory = Directory.GetParent(currentDirectory).Parent.Parent.FullName;
+            string frameTypeJsonPath = Path.Combine(projectDirectory, "FrameType.json");
+            List<FrameType> frameList = ReadAndParseJsonFileWithSystemTextJson.UseFileOpenReadTextWithSystemTextJson(frameTypeJsonPath);
             frames = Frames.Instance(frameList);
-            frames.LoadTypeImage("C:\\Users\\Tuan Anh\\Documents\\Amazing Tech\\PhotoBean\\PhotoBeanApp\\PhotoBeanApp\\PhotoBeanApp\\Frames\\1cut\\1a", "1a");
-            frames.LoadTypeImage("C:\\Users\\Tuan Anh\\Documents\\Amazing Tech\\PhotoBean\\PhotoBeanApp\\PhotoBeanApp\\PhotoBeanApp\\Frames\\4cut\\4a", "4a");
-            frames.LoadTypeImage("C:\\Users\\Tuan Anh\\Documents\\Amazing Tech\\PhotoBean\\PhotoBeanApp\\PhotoBeanApp\\PhotoBeanApp\\Frames\\6cut\\6a", "6a");
-            frames.LoadTypeImage("C:\\Users\\Tuan Anh\\Documents\\Amazing Tech\\PhotoBean\\PhotoBeanApp\\PhotoBeanApp\\PhotoBeanApp\\Frames\\6cut\\6b", "6b");
-            //WelcomeScreen welcomeScreen = new WelcomeScreen();
-            //welcomeScreen.StartButtonClick += WelcomeScreen_StartButtonClick;
-            //contentControl.Content = welcomeScreen;
-            RealtimeScreen realtimeScreen = new RealtimeScreen();
-            contentControl.Content = realtimeScreen;
+            frames.LoadTypeImage(Path.Combine(projectDirectory, "Frames\\1cut\\1a"), "1a");
+            frames.LoadTypeImage(Path.Combine(projectDirectory, "Frames\\4cut\\4a"), "4a");
+            frames.LoadTypeImage(Path.Combine(projectDirectory, "Frames\\6cut\\6a"), "6a");
+            frames.LoadTypeImage(Path.Combine(projectDirectory, "Frames\\6cut\\6b"), "6b");
+            //List<FrameType> frameList = ReadAndParseJsonFileWithSystemTextJson.UseFileOpenReadTextWithSystemTextJson("C:\\Users\\Tuan Anh\\Documents\\Amazing Tech\\PhotoBean\\PhotoBeanApp\\PhotoBeanApp\\PhotoBeanApp\\FrameType.json");
+            //frames = Frames.Instance(frameList);
+            //frames.LoadTypeImage("C:\\Users\\Tuan Anh\\Documents\\Amazing Tech\\PhotoBean\\PhotoBeanApp\\PhotoBeanApp\\PhotoBeanApp\\Frames\\1cut\\1a", "1a");
+            //frames.LoadTypeImage("C:\\Users\\Tuan Anh\\Documents\\Amazing Tech\\PhotoBean\\PhotoBeanApp\\PhotoBeanApp\\PhotoBeanApp\\Frames\\4cut\\4a", "4a");
+            //frames.LoadTypeImage("C:\\Users\\Tuan Anh\\Documents\\Amazing Tech\\PhotoBean\\PhotoBeanApp\\PhotoBeanApp\\PhotoBeanApp\\Frames\\6cut\\6a", "6a");
+            //frames.LoadTypeImage("C:\\Users\\Tuan Anh\\Documents\\Amazing Tech\\PhotoBean\\PhotoBeanApp\\PhotoBeanApp\\PhotoBeanApp\\Frames\\6cut\\6b", "6b");
+
+            WelcomeScreen welcomeScreen = new WelcomeScreen();
+            welcomeScreen.StartButtonClick += WelcomeScreen_StartButtonClick;
+            contentControl.Content = welcomeScreen;
+            //RealtimeScreen realtimeScreen = new RealtimeScreen();
+            //contentControl.Content = realtimeScreen;
         }
         private void InitializeTimer()
         {
@@ -116,7 +127,7 @@ namespace PhotoBeanApp
             WelcomeScreen welcomeScreen = new WelcomeScreen();
             welcomeScreen.StartButtonClick += WelcomeScreen_StartButtonClick;
             contentControl.Content = welcomeScreen;
-        }
+        }   
         private void WelcomeScreen_StartButtonClick(object sender, EventArgs e)
         {
             SetUpScreen setUpScreen = new SetUpScreen();
