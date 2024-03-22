@@ -33,7 +33,7 @@
 
   <ItemGroup>
     <Reference Include="FrameLib">
-      <HintPath>..\..\..\..\FrameConvert(New)\FrameLib-master\FrameLib\bin\Debug\net6.0\FrameLib.dll</HintPath>
+      <HintPath>D:\FPT\2024_Spring_OJT\FrameLib-master\FrameLib\bin\Debug\net6.0\FrameLib.dll</HintPath>
     </Reference>
   </ItemGroup>
 
