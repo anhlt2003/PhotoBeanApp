@@ -10,6 +10,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using TestImage.Frame;
 using TestImage.Render;
+using WPFStickerDemo;
 namespace PhotoBeanApp.View
 {
     /// <summary>
@@ -23,6 +24,9 @@ namespace PhotoBeanApp.View
             canvasSticker.Width = this.Width / 2;
             canvasSticker.Height = this.Height;
         }
+
+        private List<StickerInfo> _stickerList = new List<StickerInfo>();
+        
 
         private void LoadImagesFromFolder(string folderName)
         {
@@ -64,12 +68,21 @@ namespace PhotoBeanApp.View
             // Set the image source of the sticker to the clicked image source
             sticker.SetImageSource(clickedImage.Source as BitmapImage);
 
+            sticker.StickerRemoved += Sticker_StickerRemoved;
+
+            StickerInfo stickerInfo = new StickerInfo(clickedImage.Source as BitmapImage, new Point(0, 0));
+            _stickerList.Add(stickerInfo);
+
             // Optionally, set initial position of the sticker
             Canvas.SetLeft(sticker, 0);
             Canvas.SetTop(sticker, 0);
 
+            sticker.StickerInfo = stickerInfo;
+
             // Add the sticker to the canvas
             canvasSticker.Children.Add(sticker);
+
+
         }
 
 
@@ -96,27 +109,43 @@ namespace PhotoBeanApp.View
                 {
                     if (canvasSticker.Children.Contains(draggedSticker))
                     {
+                        // Update sticker info position
+                        draggedSticker.StickerInfo.Position = new Point(dropPosition.X - x, dropPosition.Y - y);
+
+                        // Update sticker position on canvas
                         Canvas.SetLeft(draggedSticker, dropPosition.X - x);
                         Canvas.SetTop(draggedSticker, dropPosition.Y - y);
+
+                        // Adjust position if the sticker is going out of bounds
                         if (dropPosition.X < x)
                         {
                             Canvas.SetLeft(draggedSticker, 0);
+                            draggedSticker.StickerInfo.Position = new Point(0, dropPosition.Y - y);
                         }
                         if (dropPosition.Y < y)
                         {
                             Canvas.SetTop(draggedSticker, 0);
+                            draggedSticker.StickerInfo.Position = new Point(dropPosition.X - x, 0);
                         }
                         if (dropPosition.X > canvasWidth - x)
                         {
                             Canvas.SetLeft(draggedSticker, canvasWidth - 2 * x);
+                            draggedSticker.StickerInfo.Position = new Point(canvasWidth - 2 * x, dropPosition.Y - y);
                         }
                         if (dropPosition.Y > canvasHeight - y)
                         {
                             Canvas.SetTop(draggedSticker, canvasHeight - 2 * y);
+                            draggedSticker.StickerInfo.Position = new Point(dropPosition.X - x, canvasHeight - 2 * y);
                         }
                     }
                 }
             }
+        }
+
+        private void Sticker_StickerRemoved(object sender, StickerEventArgs e)
+        {
+            // Remove the corresponding StickerInfo from _stickerList
+            _stickerList.Remove(e.RemovedStickerInfo);
         }
     }
 }
