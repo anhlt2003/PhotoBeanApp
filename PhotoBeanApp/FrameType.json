@@ -36,12 +36,12 @@
     "Description": null,
     "BackgroundImages": null,
     "ImageInFrame": {
-      "Width": 546,
-      "Height": 364,
-      "MarginTop": 37,
-      "MarginLeft": 27,
-      "MarginRight": 27,
-      "MarginBottom": 37,
+      "Width": 527,
+      "Height": 357,
+      "MarginTop": 38,
+      "MarginLeft": 39,
+      "MarginRight":39,
+      "MarginBottom": 38,
       "TopLeft": {
         "IsEmpty": true,
         "X": 0.0,
