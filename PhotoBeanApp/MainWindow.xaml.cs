@@ -189,7 +189,10 @@ namespace PhotoBeanApp
         private void BackgroundScreen_ButtonContinueClick(object? sender, EventArgs e)
         {
             BackgroundScreen backgroundScreen = (BackgroundScreen)sender;
-            backgroundScreen.imgTemp.Save("C:\\Users\\Tuan Anh\\Documents\\Amazing Tech\\PhotoBean\\PhotoBeanApp\\PhotoBeanApp\\PhotoBeanApp\\Images\\img.png");
+            string currentDirectory = Directory.GetCurrentDirectory();
+            string projectDirectory = Directory.GetParent(currentDirectory).Parent.Parent.FullName;
+            string imgSave = Path.Combine(projectDirectory, "Images\\img.png");
+            backgroundScreen.imgTemp.Save(imgSave);
             ResetApp();
         }
     }
