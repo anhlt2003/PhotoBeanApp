@@ -4,6 +4,7 @@ using System.Drawing;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Media.Imaging;
 using WPFStickerDemo;
 
@@ -22,6 +23,7 @@ namespace PhotoBeanApp.View
             string projectDirectory = Directory.GetParent(currentDirectory).Parent.Parent.FullName;
             string stickerDirectory = Path.Combine(projectDirectory, $"Helper\\Stickers");
             LoadImagesFromFolder(stickerDirectory);
+            Bin.Visibility = Visibility.Hidden;
             Photo.Loaded += Photo_Loaded;
             Photo.Source = ConvertToBitmapSource(photo);
         }
@@ -80,6 +82,7 @@ namespace PhotoBeanApp.View
 
         private void Image_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
+
             System.Windows.Controls.Image clickedImage = sender as System.Windows.Controls.Image;
 
             Sticker sticker = new Sticker();
@@ -96,15 +99,46 @@ namespace PhotoBeanApp.View
 
             sticker.StickerInfo = stickerInfo;
 
+            sticker.MouseLeftButtonDown += Sticker_MouseLeftButtonDown;
+            sticker.MouseLeftButtonUp += Sticker_MouseLeftButtonUp;
+
             canvasSticker.Children.Add(sticker);
 
-
+        }
+        private void Sticker_MouseLeftButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            Bin.Visibility = Visibility.Hidden;
+        }
+        private void Sticker_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            if (sender is Sticker clickedSticker)
+            {
+                clickedSticker.MouseMove += Sticker_MouseMove;
+                Bin.Visibility = Visibility.Visible;
+                if (canvasSticker.Children.Contains(clickedSticker))
+                {
+                    canvasSticker.Children.Remove(clickedSticker);
+                    canvasSticker.Children.Add(clickedSticker);
+                }
+            }
         }
 
+        private void Sticker_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (e.LeftButton == MouseButtonState.Pressed)
+            {
+                Bin.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                Bin.Visibility = Visibility.Hidden;
+            }
+        }
 
 
         private void canvas_DragOver(object sender, DragEventArgs e)
         {
+
             System.Windows.Point dropPosition = e.GetPosition(canvasSticker);
 
             double canvasWidth = canvasSticker.Width;
@@ -157,7 +191,9 @@ namespace PhotoBeanApp.View
                         draggedSticker.StickerInfo.Position = new System.Windows.Point(curX, curY);
                     }
                 }
+
             }
+
         }
 
         private void Sticker_StickerRemoved(object sender, StickerEventArgs e)

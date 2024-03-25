@@ -17,6 +17,7 @@
     <None Remove="Helper\Stickers\test1.jpg" />
     <None Remove="Helper\Stickers\test2.jpg" />
     <None Remove="Helper\Stickers\test3.jpg" />
+    <None Remove="Images\Bin.png" />
     <None Remove="Images\Camera.png" />
   </ItemGroup>
 
@@ -35,7 +36,7 @@
 
   <ItemGroup>
     <Reference Include="FrameLib">
-      <HintPath>..\..\..\..\FrameConvert(New)\FrameLib-master\FrameLib\bin\Debug\net6.0\FrameLib.dll</HintPath>
+      <HintPath>..\..\..\..\FrameLib-master\FrameLib\bin\Debug\net6.0\FrameLib.dll</HintPath>
     </Reference>
   </ItemGroup>
 
@@ -48,6 +49,7 @@
     <Resource Include="Helper\Stickers\test1.jpg" />
     <Resource Include="Helper\Stickers\test2.jpg" />
     <Resource Include="Helper\Stickers\test3.jpg" />
+    <Resource Include="Images\Bin.png" />
     <Resource Include="Images\Camera.png" />
   </ItemGroup>
 

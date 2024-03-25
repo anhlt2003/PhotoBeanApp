@@ -86,7 +86,7 @@ namespace PhotoBeanApp.View
                     rowIndex++;
                 }
             }
-            imgTemp = RenderManager.FrameImage(frameList.GetType(codeFrameType), photo, "default.png");
+            imgTemp = RenderManager.GhepBackground(frameList.GetType(codeFrameType), photo, "default.png");
             Print.Source = ConvertToBitmapSource(imgTemp);
         }
 
@@ -99,7 +99,7 @@ namespace PhotoBeanApp.View
         {
             System.Windows.Controls.Image clickedBackground = sender as System.Windows.Controls.Image;
             string fileName = System.IO.Path.GetFileName(clickedBackground.Source.ToString());
-            imgTemp = RenderManager.FrameImage(frameList.GetType(codeFrameType), photo, fileName);
+            imgTemp = RenderManager.GhepBackground(frameList.GetType(codeFrameType), photo, fileName);
             Print.Source = ConvertToBitmapSource(imgTemp);
         }
 

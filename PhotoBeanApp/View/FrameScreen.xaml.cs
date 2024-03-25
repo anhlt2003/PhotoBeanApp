@@ -90,8 +90,8 @@ namespace PhotoBeanApp.View
                     rowIndex++;
                 }
             }
-            imgTemp = RenderManager.CombineImage(frameList.GetType($"{numberOfCut}a"), images);
-            Photo.Source = ConvertToBitmapSource(RenderManager.CombineImage(frameList.GetType($"{numberOfCut}a"), images));
+            imgTemp = RenderManager.GhepHinh(frameList.GetType($"{numberOfCut}a"), images);
+            Photo.Source = ConvertToBitmapSource(RenderManager.GhepHinh(frameList.GetType($"{numberOfCut}a"), images));
         }
 
 
@@ -129,8 +129,8 @@ namespace PhotoBeanApp.View
             {
                 codeFrameType = $"{numberOfCut}d";
             }
-            imgTemp = RenderManager.CombineImage(frameList.GetType(codeFrameType), images);
-            Photo.Source = ConvertToBitmapSource(RenderManager.CombineImage(frameList.GetType(codeFrameType), images));
+            imgTemp = RenderManager.GhepHinh(frameList.GetType(codeFrameType), images);
+            Photo.Source = ConvertToBitmapSource(RenderManager.GhepHinh(frameList.GetType(codeFrameType), images));
         }
         private BitmapSource ConvertToBitmapSource(Bitmap bitmap)
         {

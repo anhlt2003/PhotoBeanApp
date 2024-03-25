@@ -15,10 +15,10 @@
 
         <Grid Grid.Column="0">
             <Image Name="Photo"></Image>
+            <Image Name="Bin" Source="/Images/Bin.png" Height="50" Width="50" HorizontalAlignment="Center" VerticalAlignment="Bottom" Panel.ZIndex="2" Margin="20"></Image>
             <Canvas Name="canvasSticker"  AllowDrop="True" Background="Transparent" DragOver="canvas_DragOver">
             </Canvas>
         </Grid>
-
         <WrapPanel Name="wrapPanel" Grid.Column="1">
         </WrapPanel>
     </Grid>
