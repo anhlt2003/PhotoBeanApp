@@ -40,13 +40,6 @@ namespace PhotoBeanApp
             frames.LoadTypeImage(Path.Combine(projectDirectory, "Frames\\4cut\\4a"), "4a");
             frames.LoadTypeImage(Path.Combine(projectDirectory, "Frames\\6cut\\6a"), "6a");
             frames.LoadTypeImage(Path.Combine(projectDirectory, "Frames\\6cut\\6b"), "6b");
-            //List<FrameType> frameList = ReadAndParseJsonFileWithSystemTextJson.UseFileOpenReadTextWithSystemTextJson("C:\\Users\\Tuan Anh\\Documents\\Amazing Tech\\PhotoBean\\PhotoBeanApp\\PhotoBeanApp\\PhotoBeanApp\\FrameType.json");
-            //frames = Frames.Instance(frameList);
-            //frames.LoadTypeImage("C:\\Users\\Tuan Anh\\Documents\\Amazing Tech\\PhotoBean\\PhotoBeanApp\\PhotoBeanApp\\PhotoBeanApp\\Frames\\1cut\\1a", "1a");
-            //frames.LoadTypeImage("C:\\Users\\Tuan Anh\\Documents\\Amazing Tech\\PhotoBean\\PhotoBeanApp\\PhotoBeanApp\\PhotoBeanApp\\Frames\\4cut\\4a", "4a");
-            //frames.LoadTypeImage("C:\\Users\\Tuan Anh\\Documents\\Amazing Tech\\PhotoBean\\PhotoBeanApp\\PhotoBeanApp\\PhotoBeanApp\\Frames\\6cut\\6a", "6a");
-            //frames.LoadTypeImage("C:\\Users\\Tuan Anh\\Documents\\Amazing Tech\\PhotoBean\\PhotoBeanApp\\PhotoBeanApp\\PhotoBeanApp\\Frames\\6cut\\6b", "6b");
-
             WelcomeScreen welcomeScreen = new WelcomeScreen();
             welcomeScreen.StartButtonClick += WelcomeScreen_StartButtonClick;
             contentControl.Content = welcomeScreen;
@@ -188,12 +181,16 @@ namespace PhotoBeanApp
 
         private void BackgroundScreen_ButtonContinueClick(object? sender, EventArgs e)
         {
+            //BackgroundScreen backgroundScreen = (BackgroundScreen)sender;
+            //string currentDirectory = Directory.GetCurrentDirectory();
+            //string projectDirectory = Directory.GetParent(currentDirectory).Parent.Parent.FullName;
+            //string imgSave = Path.Combine(projectDirectory, "Images\\img.png");
+            //backgroundScreen.imgTemp.Save(imgSave);
+            //ResetApp();
             BackgroundScreen backgroundScreen = (BackgroundScreen)sender;
-            string currentDirectory = Directory.GetCurrentDirectory();
-            string projectDirectory = Directory.GetParent(currentDirectory).Parent.Parent.FullName;
-            string imgSave = Path.Combine(projectDirectory, "Images\\img.png");
-            backgroundScreen.imgTemp.Save(imgSave);
-            ResetApp();
+            System.Drawing.Bitmap Photo = backgroundScreen.imgTemp;
+            StickerScreen stickerScreen = new StickerScreen(Photo);
+            contentControl.Content = stickerScreen;
         }
     }
 }

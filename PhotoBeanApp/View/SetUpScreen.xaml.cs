@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -42,23 +44,51 @@ namespace PhotoBeanApp.View
                     numberOfCut = 8;
                     break;
             }
-            FrameWrapPanel.Children.Clear();
+            FrameListGrid.Children.Clear();
             LoadFrames(numberOfCut);
         }
 
         public void LoadFrames(int numberOfCut)
         {
-            double itemWidth = FrameWrapPanel.Width/4;
-            for (int i = 1; i <= 4; i++)
+            string currentDirectory = Directory.GetCurrentDirectory();
+            string projectDirectory = Directory.GetParent(currentDirectory).Parent.Parent.FullName;
+            string framesDirectory = Path.Combine(projectDirectory, $"Frames\\{numberOfCut}cut");
+            List<string> defaultFramesList = GetDefaultFramesList(framesDirectory);
+            int count = 0;
+            foreach (string frameFile in defaultFramesList)
             {
+                if (count == 4)
+                {
+                    break;
+                }
                 Image frame = new Image();
-                frame.Source = new BitmapImage(new Uri($"/Frames/frame_{numberOfCut}_{i}.png", UriKind.Relative));
-                frame.Width = itemWidth;
+                frame.Source = new BitmapImage(new Uri(frameFile));
                 frame.Stretch = Stretch.Uniform;
+                frame.Margin = new Thickness(10);
                 frame.HorizontalAlignment = HorizontalAlignment.Center;
                 frame.VerticalAlignment = VerticalAlignment.Center;
-                FrameWrapPanel.Children.Add(frame);
+                int row = 0;
+                int column = count;
+
+                Grid.SetRow(frame, row);
+                Grid.SetColumn(frame, column);
+                FrameListGrid.Children.Add(frame);
+
+                count++;
             }
+        }
+
+
+        private List<string> GetDefaultFramesList(string directory)
+        {
+            List<string> defaultframeLists = new List<string>();
+
+            foreach (string file in Directory.GetFiles(directory, "*.png", SearchOption.AllDirectories))
+            {
+                defaultframeLists.Add(file);
+            }
+
+            return defaultframeLists;
         }
 
         private void ButtonNext_Click(object sender, RoutedEventArgs e)

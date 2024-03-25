@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
@@ -14,13 +15,37 @@ namespace PhotoBeanApp.View
     public partial class StickerScreen : UserControl
     {
         private List<StickerInfo> _stickerList = new List<StickerInfo>();
-        public StickerScreen()
+        public StickerScreen(Bitmap photo)
         {
             InitializeComponent();
-            LoadImagesFromFolder($"D:\\FPT\\2024_Spring_OJT\\WPFStickerDemo\\WPFStickerDemo\\Images");
-            canvasSticker.Width = this.Width / 2;
-            canvasSticker.Height = this.Height;
+            string currentDirectory = Directory.GetCurrentDirectory();
+            string projectDirectory = Directory.GetParent(currentDirectory).Parent.Parent.FullName;
+            string stickerDirectory = Path.Combine(projectDirectory, $"Helper\\Stickers");
+            LoadImagesFromFolder(stickerDirectory);
+            Photo.Loaded += Photo_Loaded;
+            Photo.Source = ConvertToBitmapSource(photo);
+        }
+        private BitmapSource ConvertToBitmapSource(Bitmap bitmap)
+        {
+            using (MemoryStream memory = new MemoryStream())
+            {
+                bitmap.Save(memory, System.Drawing.Imaging.ImageFormat.Bmp);
+                memory.Position = 0;
+                BitmapImage bitmapImage = new BitmapImage();
+                bitmapImage.BeginInit();
+                bitmapImage.StreamSource = memory;
+                bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
+                bitmapImage.EndInit();
+                return bitmapImage;
+            }
+        }
+        private void Photo_Loaded(object sender, RoutedEventArgs e)
+        {
+            double imageWidth = Photo.ActualWidth;
+            double imageHeight = Photo.ActualHeight;
 
+            canvasSticker.Width = imageWidth;
+            canvasSticker.Height = imageHeight;
         }
 
         private void LoadImagesFromFolder(string folderName)
@@ -32,7 +57,7 @@ namespace PhotoBeanApp.View
                 return;
             }
 
-            string[] imageFiles = Directory.GetFiles(folderPath, "*.jpg"); // You can modify the file extension according to your image types
+            string[] imageFiles = Directory.GetFiles(folderPath, "*.jpg");
 
             foreach (string imagePath in imageFiles)
             {
@@ -41,7 +66,7 @@ namespace PhotoBeanApp.View
                 bitmapImage.UriSource = new Uri(imagePath);
                 bitmapImage.EndInit();
 
-                Image image = new Image();
+                System.Windows.Controls.Image image = new System.Windows.Controls.Image();
                 image.Source = bitmapImage;
                 image.Width = image.Width / 2;
                 image.Height = 60;
@@ -55,26 +80,22 @@ namespace PhotoBeanApp.View
 
         private void Image_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            Image clickedImage = sender as Image;
+            System.Windows.Controls.Image clickedImage = sender as System.Windows.Controls.Image;
 
-            // Create a new instance of the sticker user control
             Sticker sticker = new Sticker();
 
-            // Set the image source of the sticker to the clicked image source
             sticker.SetImageSource(clickedImage.Source as BitmapImage);
 
             sticker.StickerRemoved += Sticker_StickerRemoved;
 
-            StickerInfo stickerInfo = new StickerInfo(clickedImage.Source as BitmapImage, new Point(clickedImage.ActualWidth / 2, clickedImage.ActualHeight / 2));
+            StickerInfo stickerInfo = new StickerInfo(clickedImage.Source as BitmapImage, new System.Windows.Point(clickedImage.ActualWidth / 2, clickedImage.ActualHeight / 2));
             _stickerList.Add(stickerInfo);
 
-            // Optionally, set initial position of the sticker
             Canvas.SetLeft(sticker, 0);
             Canvas.SetTop(sticker, 0);
 
             sticker.StickerInfo = stickerInfo;
 
-            // Add the sticker to the canvas
             canvasSticker.Children.Add(sticker);
 
 
@@ -84,12 +105,12 @@ namespace PhotoBeanApp.View
 
         private void canvas_DragOver(object sender, DragEventArgs e)
         {
-            Point dropPosition = e.GetPosition(canvasSticker);
+            System.Windows.Point dropPosition = e.GetPosition(canvasSticker);
 
             double canvasWidth = canvasSticker.Width;
             double canvasHeight = canvasSticker.Height;
 
-            if (e.OriginalSource is Image draggedImage)
+            if (e.OriginalSource is System.Windows.Controls.Image draggedImage)
             {
                 double x = draggedImage.ActualWidth / 2;
                 double y = draggedImage.ActualHeight / 2;
@@ -104,17 +125,15 @@ namespace PhotoBeanApp.View
                 {
                     if (canvasSticker.Children.Contains(draggedSticker))
                     {
-                        // Update sticker info position
-                        draggedSticker.StickerInfo.Position = new Point(dropPosition.X - x, dropPosition.Y - y);
 
-                        // Update sticker position on canvas
+                        draggedSticker.StickerInfo.Position = new System.Windows.Point(dropPosition.X - x, dropPosition.Y - y);
+
                         Canvas.SetLeft(draggedSticker, dropPosition.X - x);
                         Canvas.SetTop(draggedSticker, dropPosition.Y - y);
 
                         double curX = dropPosition.X - x;
                         double curY = dropPosition.Y - y;
 
-                        // Adjust position if the sticker is going out of bounds
                         if (dropPosition.X < x)
                         {
                             Canvas.SetLeft(draggedSticker, 0);
@@ -135,7 +154,7 @@ namespace PhotoBeanApp.View
                             Canvas.SetTop(draggedSticker, canvasHeight - 2 * y);
                             curY = canvasHeight - y;
                         }
-                        draggedSticker.StickerInfo.Position = new Point(curX, curY);
+                        draggedSticker.StickerInfo.Position = new System.Windows.Point(curX, curY);
                     }
                 }
             }
@@ -143,7 +162,6 @@ namespace PhotoBeanApp.View
 
         private void Sticker_StickerRemoved(object sender, StickerEventArgs e)
         {
-            // Remove the corresponding StickerInfo from _stickerList
             _stickerList.Remove(e.RemovedStickerInfo);
         }
     }
