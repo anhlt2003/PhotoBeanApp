@@ -6,9 +6,9 @@
              xmlns:local="clr-namespace:WPFStickerDemo"
              mc:Ignorable="d"
              MouseMove="UserControl_MouseMove"
+             
              x:Name="sticker">
     <Grid>
         <Image x:Name="stickerImage" Height="60"/>
-        <Button x:Name="removeSticker" Content="X" HorizontalAlignment="Right" VerticalAlignment="Top" Click="removeSticker_Click"/>
     </Grid>
 </UserControl>

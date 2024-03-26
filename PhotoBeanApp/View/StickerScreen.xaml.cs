@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
+using System.Security.Cryptography;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -26,6 +27,7 @@ namespace PhotoBeanApp.View
             Bin.Visibility = Visibility.Hidden;
             Photo.Loaded += Photo_Loaded;
             Photo.Source = ConvertToBitmapSource(photo);
+
         }
         private BitmapSource ConvertToBitmapSource(Bitmap bitmap)
         {
@@ -89,8 +91,6 @@ namespace PhotoBeanApp.View
 
             sticker.SetImageSource(clickedImage.Source as BitmapImage);
 
-            sticker.StickerRemoved += Sticker_StickerRemoved;
-
             StickerInfo stickerInfo = new StickerInfo(clickedImage.Source as BitmapImage, new System.Windows.Point(clickedImage.ActualWidth / 2, clickedImage.ActualHeight / 2));
             _stickerList.Add(stickerInfo);
 
@@ -101,6 +101,7 @@ namespace PhotoBeanApp.View
 
             sticker.MouseLeftButtonDown += Sticker_MouseLeftButtonDown;
             sticker.MouseLeftButtonUp += Sticker_MouseLeftButtonUp;
+            sticker.MouseMove += Sticker_MouseMove;
 
             canvasSticker.Children.Add(sticker);
 
@@ -113,12 +114,15 @@ namespace PhotoBeanApp.View
         {
             if (sender is Sticker clickedSticker)
             {
-                clickedSticker.MouseMove += Sticker_MouseMove;
                 Bin.Visibility = Visibility.Visible;
+
                 if (canvasSticker.Children.Contains(clickedSticker))
                 {
+                    
                     canvasSticker.Children.Remove(clickedSticker);
                     canvasSticker.Children.Add(clickedSticker);
+                    _stickerList.Remove(clickedSticker.StickerInfo);
+                    _stickerList.Add(clickedSticker.StickerInfo);
                 }
             }
         }
@@ -132,6 +136,39 @@ namespace PhotoBeanApp.View
             else
             {
                 Bin.Visibility = Visibility.Hidden;
+
+                System.Windows.Point dropPosition = e.GetPosition(canvasSticker);
+
+                System.Windows.Point binPosition = Bin.TranslatePoint(new System.Windows.Point(0, 0), canvasSticker);
+
+                double binX = binPosition.X;
+                double binY = binPosition.Y;
+                double binWidth = Bin.ActualWidth;
+                double binHeight = Bin.ActualHeight;
+
+                if (e.OriginalSource is System.Windows.Controls.Image draggedImage)
+                {
+
+                    FrameworkElement parentElement = draggedImage;
+                    while (parentElement.Parent != null && !(parentElement.Parent is Sticker))
+                    {
+                        parentElement = parentElement.Parent as FrameworkElement;
+                    }
+
+                    if (parentElement.Parent is Sticker draggedSticker)
+                    {
+                        if (canvasSticker.Children.Contains(draggedSticker))
+                        {
+                            //check if drop position is inside image bin
+                            if (dropPosition.X >= binX && dropPosition.X <= binX + binWidth &&
+                                dropPosition.Y >= binY && dropPosition.Y <= binY + binHeight)
+                            {
+                                canvasSticker.Children.Remove(draggedSticker);
+                                _stickerList.Remove(draggedSticker.StickerInfo);
+                            }
+                        }
+                    }
+                }
             }
         }
 
@@ -143,6 +180,13 @@ namespace PhotoBeanApp.View
 
             double canvasWidth = canvasSticker.Width;
             double canvasHeight = canvasSticker.Height;
+
+            System.Windows.Point binPosition = Bin.TranslatePoint(new System.Windows.Point(0, 0), canvasSticker);
+
+            double binX = binPosition.X;
+            double binY = binPosition.Y;
+            double binWidth = Bin.ActualWidth;
+            double binHeight = Bin.ActualHeight;
 
             if (e.OriginalSource is System.Windows.Controls.Image draggedImage)
             {
@@ -171,27 +215,37 @@ namespace PhotoBeanApp.View
                         if (dropPosition.X < x)
                         {
                             Canvas.SetLeft(draggedSticker, 0);
-                            curX = x;
+                            curX = 0;
                         }
                         if (dropPosition.Y < y)
                         {
                             Canvas.SetTop(draggedSticker, 0);
-                            curY = y;
+                            curY = 0;
                         }
                         if (dropPosition.X > canvasWidth - x)
                         {
                             Canvas.SetLeft(draggedSticker, canvasWidth - 2 * x);
-                            curX = canvasWidth - x;
+                            curX = canvasWidth - 2 * x;
                         }
                         if (dropPosition.Y > canvasHeight - y)
                         {
                             Canvas.SetTop(draggedSticker, canvasHeight - 2 * y);
-                            curY = canvasHeight - y;
+                            curY = canvasHeight - 2 * y;
                         }
                         draggedSticker.StickerInfo.Position = new System.Windows.Point(curX, curY);
+
+                        //check if drop position is inside image bin
+                        if (dropPosition.X >= binX && dropPosition.X <= binX + binWidth &&
+                            dropPosition.Y >= binY && dropPosition.Y <= binY + binHeight)
+                        {
+                            draggedSticker.stickerImage.Opacity = 0.6;
+                        }
+                        else
+                        {
+                            draggedSticker.stickerImage.Opacity = 1.0;
+                        }
                     }
                 }
-
             }
 
         }
@@ -200,5 +254,6 @@ namespace PhotoBeanApp.View
         {
             _stickerList.Remove(e.RemovedStickerInfo);
         }
+
     }
 }

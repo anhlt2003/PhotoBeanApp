@@ -20,23 +20,12 @@ namespace WPFStickerDemo
     /// </summary>
     public partial class Sticker : UserControl
     {
-        public event EventHandler<StickerEventArgs> StickerRemoved;
-
         public StickerInfo StickerInfo { get; set; }
         public Sticker()
         {
             InitializeComponent();
         }
         
-
-
-        private void removeSticker_Click(object sender, RoutedEventArgs e)
-        {
-            var data = (Canvas)Parent;
-            data.Children.Remove(this);
-
-            StickerRemoved?.Invoke(this, new StickerEventArgs(StickerInfo));
-        }
 
         public void SetImageSource(BitmapImage source)
         {
