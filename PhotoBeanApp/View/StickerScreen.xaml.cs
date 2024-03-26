@@ -7,6 +7,8 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
+using TestImage.Frame;
+using TestImage.Render;
 using WPFStickerDemo;
 using static System.Net.Mime.MediaTypeNames;
 
@@ -17,7 +19,7 @@ namespace PhotoBeanApp.View
     /// </summary>
     public partial class StickerScreen : UserControl
     {
-        private List<StickerInfo> _stickerList = new List<StickerInfo>();
+        private List<IconInImage> _stickerList = new List<IconInImage>();
         public StickerScreen(Bitmap photo)
         {
             InitializeComponent();
@@ -92,7 +94,12 @@ namespace PhotoBeanApp.View
 
             sticker.SetImageSource(clickedImage.Source as BitmapImage);
 
-            StickerInfo stickerInfo = new StickerInfo(clickedImage.Source as BitmapImage, new System.Windows.Point(clickedImage.ActualWidth / 2, clickedImage.ActualHeight / 2), clickedImage.Width / 2, 60.0);
+            IconInImage stickerInfo = new IconInImage();
+
+            stickerInfo.IconBitmap = ConvertBitmapImageToBitmap(clickedImage.Source as BitmapImage);
+            stickerInfo.Position = new System.Drawing.Point((int)clickedImage.ActualWidth / 2, (int)clickedImage.ActualHeight / 2);
+            stickerInfo.Size = new System.Drawing.Size((int)clickedImage.Width / 2, 60);
+
             _stickerList.Add(stickerInfo);
 
             Canvas.SetLeft(sticker, 0);
@@ -205,7 +212,7 @@ namespace PhotoBeanApp.View
                     if (canvasSticker.Children.Contains(draggedSticker))
                     {
 
-                        draggedSticker.StickerInfo.Position = new System.Windows.Point(dropPosition.X - x, dropPosition.Y - y);
+                        draggedSticker.StickerInfo.Position = new System.Drawing.Point((int)(dropPosition.X - x), (int)(dropPosition.Y - y));
 
                         Canvas.SetLeft(draggedSticker, dropPosition.X - x);
                         Canvas.SetTop(draggedSticker, dropPosition.Y - y);
@@ -233,7 +240,7 @@ namespace PhotoBeanApp.View
                             Canvas.SetTop(draggedSticker, canvasHeight - 2 * y);
                             curY = canvasHeight - 2 * y;
                         }
-                        draggedSticker.StickerInfo.Position = new System.Windows.Point(curX, curY);
+                        draggedSticker.StickerInfo.Position = new System.Drawing.Point((int)curX, (int)curY);
 
                         //check if drop position is inside image bin
                         if (dropPosition.X >= binX && dropPosition.X <= binX + binWidth &&
@@ -251,10 +258,25 @@ namespace PhotoBeanApp.View
 
         }
 
-        private void Sticker_StickerRemoved(object sender, StickerEventArgs e)
+        private Bitmap ConvertBitmapImageToBitmap(BitmapImage bitmapImage)
         {
-            _stickerList.Remove(e.RemovedStickerInfo);
+            Bitmap bitmap;
+            using (MemoryStream stream = new MemoryStream())
+            {
+                BitmapEncoder encoder = new BmpBitmapEncoder();
+                encoder.Frames.Add(BitmapFrame.Create(bitmapImage));
+                encoder.Save(stream);
+                bitmap = new Bitmap(stream);
+            }
+            return bitmap;
         }
 
+
+        //test render icon
+        //private void renderImage_Click(object sender, RoutedEventArgs e)
+        //{
+        //    Bitmap imTemp = RenderManager.RenderIcons(ConvertBitmapImageToBitmap(Photo.Source as BitmapImage),_stickerList);
+        //    testRender.Source = ConvertToBitmapSource(imTemp);
+        //}
     }
 }

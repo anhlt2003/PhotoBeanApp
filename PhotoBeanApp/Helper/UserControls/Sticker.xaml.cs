@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using TestImage.Frame;
 
 namespace WPFStickerDemo
 {
@@ -20,7 +21,7 @@ namespace WPFStickerDemo
     /// </summary>
     public partial class Sticker : UserControl
     {
-        public StickerInfo StickerInfo { get; set; }
+        public IconInImage StickerInfo { get; set; }
         public Sticker()
         {
             InitializeComponent();
