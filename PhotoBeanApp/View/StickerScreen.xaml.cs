@@ -8,6 +8,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
 using WPFStickerDemo;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace PhotoBeanApp.View
 {
@@ -91,7 +92,7 @@ namespace PhotoBeanApp.View
 
             sticker.SetImageSource(clickedImage.Source as BitmapImage);
 
-            StickerInfo stickerInfo = new StickerInfo(clickedImage.Source as BitmapImage, new System.Windows.Point(clickedImage.ActualWidth / 2, clickedImage.ActualHeight / 2));
+            StickerInfo stickerInfo = new StickerInfo(clickedImage.Source as BitmapImage, new System.Windows.Point(clickedImage.ActualWidth / 2, clickedImage.ActualHeight / 2), clickedImage.Width / 2, 60.0);
             _stickerList.Add(stickerInfo);
 
             Canvas.SetLeft(sticker, 0);

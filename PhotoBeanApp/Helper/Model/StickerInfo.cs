@@ -8,11 +8,15 @@ namespace WPFStickerDemo
     {
         public BitmapImage StickerSource { get; set; }
         public Point Position { get; set; }
+        public double stickerX { get; set; }
+        public double stickerY { get; set; }
 
-        public StickerInfo(BitmapImage stickerSource, Point position)
+        public StickerInfo(BitmapImage stickerSource, Point position, double stickerX, double stickerY)
         {
             StickerSource = stickerSource;
             Position = position;
+            this.stickerX = stickerX;
+            this.stickerY = stickerY;
         }
     }
 }
