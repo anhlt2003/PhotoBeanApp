@@ -22,7 +22,9 @@ namespace PhotoBeanApp.View
     public partial class StickerScreen : UserControl
     {
 
+        public event EventHandler ButtonContinueClick;
         private List<IconInImage> _stickerList = new List<IconInImage>();
+        public Bitmap imTemp { get; set; }
         public StickerScreen(Bitmap photo)
         {
             InitializeComponent();
@@ -335,11 +337,11 @@ namespace PhotoBeanApp.View
             }
             return icon;
         }
-        //test render icon
-        private void renderImage_Click(object sender, RoutedEventArgs e)
+        
+        private void ContinueButton_Click(object sender, RoutedEventArgs e)
         {
-            Bitmap imTemp = RenderManager.RenderIcons(ConvertBitmapImageToBitmap(Photo.Source as BitmapImage), _stickerList);
-            testRender.Source = ConvertToBitmapSource(imTemp);
+            imTemp = RenderManager.RenderIcons(ConvertBitmapImageToBitmap(Photo.Source as BitmapImage), _stickerList);
+            ButtonContinueClick?.Invoke(this, EventArgs.Empty);
         }
     }
 }
