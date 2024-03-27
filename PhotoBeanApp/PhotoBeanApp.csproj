@@ -34,7 +34,7 @@
 
   <ItemGroup>
     <Reference Include="FrameLib">
-      <HintPath>..\..\..\FrameLib.dll</HintPath>
+      <HintPath>..\..\..\..\FrameLib-master\FrameLib\bin\Debug\net6.0\FrameLib.dll</HintPath>
     </Reference>
   </ItemGroup>
 
