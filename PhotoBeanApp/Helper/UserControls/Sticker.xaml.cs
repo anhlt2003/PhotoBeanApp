@@ -1,17 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using TestImage.Frame;
 
 namespace WPFStickerDemo
@@ -31,6 +21,14 @@ namespace WPFStickerDemo
         public void SetImageSource(BitmapImage source)
         {
             stickerImage.Source = source;
+            stickerImage.Loaded += StickerImage_Loaded;
+        }
+
+        private void StickerImage_Loaded(object sender, RoutedEventArgs e)
+        {
+            // Adjust sticker size to match the size of the stickerImage
+            sticker.Width = stickerImage.ActualWidth;
+            sticker.Height = stickerImage.ActualHeight;
         }
 
         private void UserControl_MouseMove(object sender, MouseEventArgs e)

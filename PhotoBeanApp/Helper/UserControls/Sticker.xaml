@@ -6,9 +6,8 @@
              xmlns:local="clr-namespace:WPFStickerDemo"
              mc:Ignorable="d"
              MouseMove="UserControl_MouseMove"
-             
              x:Name="sticker">
-    <Grid>
-        <Image x:Name="stickerImage" Height="60"/>
+    <Grid x:Name="stickerGrid">
+        <Image x:Name="stickerImage" Stretch="Fill"/>
     </Grid>
 </UserControl>

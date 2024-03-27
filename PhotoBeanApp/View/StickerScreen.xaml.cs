@@ -13,6 +13,8 @@ using TestImage.Render;
 using WPFStickerDemo;
 using static System.Net.Mime.MediaTypeNames;
 using System.Windows.Media.Imaging;
+using System.Windows.Documents;
+using PhotoBeanApp.Helper.Classes;
 
 namespace PhotoBeanApp.View
 {
@@ -35,7 +37,6 @@ namespace PhotoBeanApp.View
             Bin.Visibility = Visibility.Hidden;
             Photo.Loaded += Photo_Loaded;
             Photo.Source = ConvertToBitmapSource(photo);
-
         }
         private BitmapSource ConvertToBitmapSource(Bitmap bitmap)
         {
@@ -70,7 +71,7 @@ namespace PhotoBeanApp.View
                 return;
             }
 
-            string[] imageFiles = Directory.GetFiles(folderPath, "*.jpg");
+            string[] imageFiles = Directory.GetFiles(folderPath, "*.png");
 
             foreach (string imagePath in imageFiles)
             {
@@ -90,7 +91,6 @@ namespace PhotoBeanApp.View
             }
             image = new System.Windows.Controls.Image();
             image.Source = GetWeatherIcon("Ho Chi Minh City, VN").Source;
-            image.Width = image.Width / 2;
             image.Height = 60;
             image.Stretch = System.Windows.Media.Stretch.Uniform;
             image.Margin = new Thickness(5);
@@ -101,13 +101,7 @@ namespace PhotoBeanApp.View
 
         private void Image_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-
             System.Windows.Controls.Image clickedImage = sender as System.Windows.Controls.Image;
-
-            Sticker sticker = new Sticker();
-
-            sticker.SetImageSource(clickedImage.Source as BitmapImage);
-
 
             double imageRealWidth = 0;
             double imageRealHeight = 0;
@@ -118,16 +112,26 @@ namespace PhotoBeanApp.View
                 imageRealHeight = bitmapSource.PixelHeight;
             }
 
+            double ratioWidth = imageRealWidth / Photo.ActualWidth;
+            double ratioHeight = imageRealHeight / Photo.ActualHeight;
+
             IconInImage stickerInfo = new IconInImage();
 
             stickerInfo.IconBitmap = ConvertBitmapImageToBitmap(clickedImage.Source as BitmapImage);
-            stickerInfo.Position = new System.Drawing.Point(0,0);
-            stickerInfo.Size = new System.Drawing.Size((int)((clickedImage.ActualWidth)*(imageRealWidth/Photo.ActualWidth)), (int)(clickedImage.ActualHeight* (imageRealWidth / Photo.ActualWidth)));
+            stickerInfo.Position = new System.Drawing.Point(0, 0);
+            stickerInfo.Size = new System.Drawing.Size((int)(clickedImage.ActualWidth * ratioWidth), (int)(clickedImage.ActualHeight * ratioHeight));
 
             _stickerList.Add(stickerInfo);
 
+            Sticker sticker = new Sticker();
+
+            sticker.SetImageSource(clickedImage.Source as BitmapImage);
+
             Canvas.SetLeft(sticker, 0);
             Canvas.SetTop(sticker, 0);
+
+            sticker.Width = (int)(clickedImage.ActualWidth * ratioWidth);
+            sticker.Height = (int)(clickedImage.ActualHeight * ratioHeight);
 
             sticker.StickerInfo = stickerInfo;
 
@@ -136,6 +140,12 @@ namespace PhotoBeanApp.View
             sticker.MouseMove += Sticker_MouseMove;
 
             canvasSticker.Children.Add(sticker);
+
+            AdornerLayer adornerLayer = AdornerLayer.GetAdornerLayer(sticker);
+            if (adornerLayer != null)
+            {
+                adornerLayer.Add(new ResizeAdorner(sticker));
+            }
 
         }
         private void Sticker_MouseLeftButtonUp(object sender,MouseButtonEventArgs e)
@@ -221,7 +231,6 @@ namespace PhotoBeanApp.View
                 imageRealHeight = bitmapSource.PixelHeight;
             }
 
-
             System.Windows.Point binPosition = Bin.TranslatePoint(new System.Windows.Point(0, 0), canvasSticker);
 
             double binX = binPosition.X;
@@ -244,7 +253,6 @@ namespace PhotoBeanApp.View
                 {
                     if (canvasSticker.Children.Contains(draggedSticker))
                     {
-
                         Canvas.SetLeft(draggedSticker, dropPosition.X - x);
                         Canvas.SetTop(draggedSticker, dropPosition.Y - y);
 
@@ -271,9 +279,9 @@ namespace PhotoBeanApp.View
                             Canvas.SetTop(draggedSticker, canvasHeight - 2 * y);
                             curY = canvasHeight - 2 * y;
                         }
-                        draggedSticker.StickerInfo.Position = new System.Drawing.Point((int)(curX*(imageRealWidth/Photo.ActualWidth)), (int)(curY*(imageRealHeight/Photo.ActualHeight)));
+                        draggedSticker.StickerInfo.Position = new System.Drawing.Point((int)(curX * (imageRealWidth / Photo.ActualWidth)), (int)(curY * (imageRealHeight / Photo.ActualHeight)));
 
-                        //check if drop position is inside image bin
+                        // Check if drop position is inside image bin
                         if (dropPosition.X >= binX && dropPosition.X <= binX + binWidth &&
                             dropPosition.Y >= binY && dropPosition.Y <= binY + binHeight)
                         {
@@ -286,7 +294,6 @@ namespace PhotoBeanApp.View
                     }
                 }
             }
-
         }
 
         private Bitmap ConvertBitmapImageToBitmap(BitmapImage bitmapImage)
@@ -340,8 +347,34 @@ namespace PhotoBeanApp.View
         
         private void ContinueButton_Click(object sender, RoutedEventArgs e)
         {
+            recalculateStickerSize(_stickerList);
             imTemp = RenderManager.RenderIcons(ConvertBitmapImageToBitmap(Photo.Source as BitmapImage), _stickerList);
             ButtonContinueClick?.Invoke(this, EventArgs.Empty);
+        }
+
+        private void recalculateStickerSize(List<IconInImage> stickerList)
+        {
+            double imageRealWidth = 0;
+            double imageRealHeight = 0;
+
+            if (Photo.Source is BitmapSource bitmapSource)
+            {
+                imageRealWidth = bitmapSource.PixelWidth;
+                imageRealHeight = bitmapSource.PixelHeight;
+            }
+
+            double ratioWidth = imageRealWidth / Photo.ActualWidth;
+            double ratioHeight = imageRealHeight / Photo.ActualHeight;
+
+
+            foreach (IconInImage icon in stickerList)
+            {
+                int newWidth = (int)(icon.Size.Width * ratioWidth);
+                int newHeight = (int)(icon.Size.Height * ratioHeight);
+
+                // Update the size of the sticker
+                icon.Size = new System.Drawing.Size(newWidth, newHeight);
+            }
         }
     }
 }
