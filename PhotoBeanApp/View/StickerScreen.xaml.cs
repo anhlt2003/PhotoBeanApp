@@ -63,7 +63,7 @@ namespace PhotoBeanApp.View
 
             foreach (string imagePath in imageFiles)
             {
-                BitmapImage bitmapImage = new BitmapImage();
+                BitmapImage bitmapImage = new BitmapImage();    
                 bitmapImage.BeginInit();
                 bitmapImage.UriSource = new Uri(imagePath);
                 bitmapImage.EndInit();
