@@ -49,8 +49,8 @@ namespace PhotoBeanApp.View
 
         private void SetUpLeftGrid()
         {
-            double columnWidth = 300;
-            double rowHeight = 300;
+            double columnWidth = 250;
+            double rowHeight = 200;
             ChoosePhoto.ColumnDefinitions.Clear();
             ChoosePhoto.RowDefinitions.Clear();
 
