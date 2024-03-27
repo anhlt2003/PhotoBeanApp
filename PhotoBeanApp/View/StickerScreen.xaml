@@ -14,9 +14,9 @@
         </Grid.ColumnDefinitions>
 
         <Grid Grid.Column="0">
-            <Image Name="Photo"></Image>
-            <Image Name="Bin" Source="/Images/Bin.png" Height="50" Width="50" HorizontalAlignment="Center" VerticalAlignment="Bottom" Panel.ZIndex="2" Margin="20"></Image>
-            <Canvas Name="canvasSticker"  AllowDrop="True" Background="Transparent" DragOver="canvas_DragOver">
+            <Image Name="Photo" Panel.ZIndex="1"></Image>
+            <Image Name="Bin" Source="/Images/Bin.png" Height="50" Width="50" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="20" Opacity="0.5" Panel.ZIndex="2"></Image>
+            <Canvas Name="canvasSticker"  AllowDrop="True" Background="Transparent" DragOver="canvas_DragOver" Panel.ZIndex="3">
             </Canvas>
         </Grid>
         <WrapPanel Name="wrapPanel" Grid.Column="1">
