@@ -1,6 +1,7 @@
 ﻿using PhotoBeanApp.View;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
@@ -17,7 +18,7 @@ namespace PhotoBeanApp
     {
         private int numberOfCut;
         private int numberOfPrint;
-        List<Image> imageList;
+        List<System.Windows.Controls.Image> imageList;
         Frames frames;
         private DispatcherTimer countdownTimer;
         private int remainingTimeInSeconds = 30;
@@ -30,7 +31,7 @@ namespace PhotoBeanApp
             numberOfCut = 4;
             numberOfPrint = 1;
             currentScreenIndex = 0;
-            imageList = new List<Image>();
+            imageList = new List<System.Windows.Controls.Image>();
             string currentDirectory = Directory.GetCurrentDirectory();
             string projectDirectory = Directory.GetParent(currentDirectory).Parent.Parent.FullName;
             string frameTypeJsonPath = Path.Combine(projectDirectory, "FrameType.json");
@@ -99,6 +100,12 @@ namespace PhotoBeanApp
                         BackgroundScreen_ButtonContinueClick(backgroundScreen, EventArgs.Empty);
                     }
                     break;
+                case 7:
+                    if(contentControl.Content is GoodbyeScreen goodbyeScreen)
+                    {
+                        ResetApp();
+                    }
+                    break;
             }
         }
 
@@ -149,7 +156,7 @@ namespace PhotoBeanApp
         private void TakePhotoScreen_ContinueButtonClick(object sender, EventArgs e)
         {
             TakePhotoScreen takePhotoScreen = (TakePhotoScreen)sender;
-            List<Image> imageList = takePhotoScreen.imageList;
+            List<System.Windows.Controls.Image> imageList = takePhotoScreen.imageList;
             ChoosePhotoScreen choosePhotoScreen = new ChoosePhotoScreen(numberOfCut,imageList);
             choosePhotoScreen.ButtonContinueClick += ChoosePhotoScreen_ButtonContinueClick;
             contentControl.Content = choosePhotoScreen;
@@ -186,9 +193,18 @@ namespace PhotoBeanApp
             //backgroundScreen.imgTemp.Save(imgSave);
             //ResetApp();
             BackgroundScreen backgroundScreen = (BackgroundScreen)sender;
-            System.Drawing.Bitmap Photo = backgroundScreen.imgTemp;
-            StickerScreen stickerScreen = new StickerScreen(Photo);
+            Bitmap photo = backgroundScreen.imgTemp;
+            StickerScreen stickerScreen = new StickerScreen(photo);
+            stickerScreen.ButtonContinueClick += StickerScreen_ButtonContinueClick;
             contentControl.Content = stickerScreen;
+        }
+
+        private void StickerScreen_ButtonContinueClick(object? sender, EventArgs e)
+        {
+            StickerScreen stickerScreen = (StickerScreen)sender;
+            Bitmap photo = stickerScreen.imTemp;
+            GoodbyeScreen goodbyeScreen = new GoodbyeScreen(photo);
+            contentControl.Content = goodbyeScreen;
         }
     }
 }

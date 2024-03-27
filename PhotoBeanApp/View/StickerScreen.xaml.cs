@@ -21,7 +21,6 @@ namespace PhotoBeanApp.View
     /// </summary>
     public partial class StickerScreen : UserControl
     {
-
         public event EventHandler ButtonContinueClick;
         private List<IconInImage> _stickerList = new List<IconInImage>();
         public Bitmap imTemp { get; set; }
@@ -89,13 +88,12 @@ namespace PhotoBeanApp.View
                 wrapPanel.Children.Add(image);
             }
             image = new System.Windows.Controls.Image();
-            image.Source = GetWeatherIcon("Ho Chi Minh City, VN").Source;
+            image.Source = GetWeatherIcon("Ho Chi Minh City, VN");
             image.Width = image.Width / 2;
             image.Height = 60;
             image.Stretch = System.Windows.Media.Stretch.Uniform;
             image.Margin = new Thickness(5);
             image.MouseLeftButtonDown += Image_MouseLeftButtonDown;
-
             wrapPanel.Children.Add(image);
         }
 
@@ -302,9 +300,9 @@ namespace PhotoBeanApp.View
             return bitmap;
         }
 
-        public System.Windows.Controls.Image GetWeatherIcon(string city)
+        public BitmapImage GetWeatherIcon(string city)
         {
-            System.Windows.Controls.Image icon = new System.Windows.Controls.Image();
+            BitmapImage iconImage = new BitmapImage();
             try
             {
                 string apiKey = "b976b9fdcd1f9ddaa0ae7a3ee362df88";
@@ -324,18 +322,16 @@ namespace PhotoBeanApp.View
 
                     byte[] iconData = client.DownloadData(iconUrl);
                     MemoryStream iconStream = new MemoryStream(iconData);
-                    BitmapImage iconImage = new BitmapImage();
                     iconImage.BeginInit();
                     iconImage.StreamSource = iconStream;
                     iconImage.EndInit();
-                    icon.Source = iconImage;
                 }
             }
             catch (Exception ex)
             {
                 MessageBox.Show("Error: " + ex.Message); 
             }
-            return icon;
+            return iconImage;
         }
         
         private void ContinueButton_Click(object sender, RoutedEventArgs e)
