@@ -11,6 +11,7 @@ using TestImage.Frame;
 using TestImage.Render;
 using WPFStickerDemo;
 using static System.Net.Mime.MediaTypeNames;
+using System.Windows.Media.Imaging;
 
 namespace PhotoBeanApp.View
 {
@@ -75,7 +76,6 @@ namespace PhotoBeanApp.View
 
                 System.Windows.Controls.Image image = new System.Windows.Controls.Image();
                 image.Source = bitmapImage;
-                image.Width = image.Width / 2;
                 image.Height = 60;
                 image.Stretch = System.Windows.Media.Stretch.Uniform;
                 image.Margin = new Thickness(5);
@@ -94,11 +94,21 @@ namespace PhotoBeanApp.View
 
             sticker.SetImageSource(clickedImage.Source as BitmapImage);
 
+
+            double imageRealWidth = 0;
+            double imageRealHeight = 0;
+
+            if (Photo.Source is BitmapSource bitmapSource)
+            {
+                imageRealWidth = bitmapSource.PixelWidth;
+                imageRealHeight = bitmapSource.PixelHeight;
+            }
+
             IconInImage stickerInfo = new IconInImage();
 
             stickerInfo.IconBitmap = ConvertBitmapImageToBitmap(clickedImage.Source as BitmapImage);
-            stickerInfo.Position = new System.Drawing.Point((int)clickedImage.ActualWidth / 2, (int)clickedImage.ActualHeight / 2);
-            stickerInfo.Size = new System.Drawing.Size((int)clickedImage.Width / 2, 60);
+            stickerInfo.Position = new System.Drawing.Point(0,0);
+            stickerInfo.Size = new System.Drawing.Size((int)((clickedImage.ActualWidth)*(imageRealWidth/Photo.ActualWidth)), (int)(clickedImage.ActualHeight* (imageRealWidth / Photo.ActualWidth)));
 
             _stickerList.Add(stickerInfo);
 
@@ -189,6 +199,16 @@ namespace PhotoBeanApp.View
             double canvasWidth = canvasSticker.Width;
             double canvasHeight = canvasSticker.Height;
 
+            double imageRealWidth = 0;
+            double imageRealHeight = 0;
+
+            if (Photo.Source is BitmapSource bitmapSource)
+            {
+                imageRealWidth = bitmapSource.PixelWidth;
+                imageRealHeight = bitmapSource.PixelHeight;
+            }
+
+
             System.Windows.Point binPosition = Bin.TranslatePoint(new System.Windows.Point(0, 0), canvasSticker);
 
             double binX = binPosition.X;
@@ -211,8 +231,6 @@ namespace PhotoBeanApp.View
                 {
                     if (canvasSticker.Children.Contains(draggedSticker))
                     {
-
-                        draggedSticker.StickerInfo.Position = new System.Drawing.Point((int)(dropPosition.X - x), (int)(dropPosition.Y - y));
 
                         Canvas.SetLeft(draggedSticker, dropPosition.X - x);
                         Canvas.SetTop(draggedSticker, dropPosition.Y - y);
@@ -240,7 +258,7 @@ namespace PhotoBeanApp.View
                             Canvas.SetTop(draggedSticker, canvasHeight - 2 * y);
                             curY = canvasHeight - 2 * y;
                         }
-                        draggedSticker.StickerInfo.Position = new System.Drawing.Point((int)curX, (int)curY);
+                        draggedSticker.StickerInfo.Position = new System.Drawing.Point((int)(curX*(imageRealWidth/Photo.ActualWidth)), (int)(curY*(imageRealHeight/Photo.ActualHeight)));
 
                         //check if drop position is inside image bin
                         if (dropPosition.X >= binX && dropPosition.X <= binX + binWidth &&
@@ -273,10 +291,10 @@ namespace PhotoBeanApp.View
 
 
         //test render icon
-        //private void renderImage_Click(object sender, RoutedEventArgs e)
-        //{
-        //    Bitmap imTemp = RenderManager.RenderIcons(ConvertBitmapImageToBitmap(Photo.Source as BitmapImage),_stickerList);
-        //    testRender.Source = ConvertToBitmapSource(imTemp);
-        //}
+        private void renderImage_Click(object sender, RoutedEventArgs e)
+        {
+            Bitmap imTemp = RenderManager.RenderIcons(ConvertBitmapImageToBitmap(Photo.Source as BitmapImage), _stickerList);
+            testRender.Source = ConvertToBitmapSource(imTemp);
+        }
     }
 }

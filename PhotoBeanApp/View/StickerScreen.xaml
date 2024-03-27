@@ -11,6 +11,7 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
         <Grid Grid.Column="0">
@@ -21,5 +22,9 @@
         </Grid>
         <WrapPanel Name="wrapPanel" Grid.Column="1">
         </WrapPanel>
+        <Grid Grid.Column="2">
+            <Image Name="testRender"/>
+            <Button Name="renderImage" Height="60" Click="renderImage_Click"/>
+        </Grid>
     </Grid>
 </UserControl>
