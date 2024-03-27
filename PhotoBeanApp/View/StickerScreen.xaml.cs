@@ -89,7 +89,7 @@ namespace PhotoBeanApp.View
                 wrapPanel.Children.Add(image);
             }
             image = new System.Windows.Controls.Image();
-            image.Source = GetWeatherIcon("Ho Chi Minh City, VN").Source;
+            image.Source = GetWeatherIcon("Ho Chi Minh City, VN");
             image.Height = 60;
             image.Stretch = System.Windows.Media.Stretch.Uniform;
             image.Margin = new Thickness(5);
@@ -117,7 +117,7 @@ namespace PhotoBeanApp.View
 
             stickerInfo.IconBitmap = ConvertBitmapImageToBitmap(clickedImage.Source as BitmapImage);
             stickerInfo.Position = new System.Drawing.Point(0, 0);
-            stickerInfo.Size = new System.Drawing.Size((int)(clickedImage.ActualWidth * ratioWidth), (int)(clickedImage.ActualHeight * ratioHeight));
+            stickerInfo.Size = new System.Drawing.Size((int)(clickedImage.ActualWidth * ratioWidth * ratioWidth), (int)(clickedImage.ActualHeight * ratioHeight * ratioHeight));
 
             _stickerList.Add(stickerInfo);
 
@@ -142,7 +142,7 @@ namespace PhotoBeanApp.View
             AdornerLayer adornerLayer = AdornerLayer.GetAdornerLayer(sticker);
             if (adornerLayer != null)
             {
-                adornerLayer.Add(new ResizeAdorner(sticker));
+                adornerLayer.Add(new ResizeAdorner(sticker, ratioWidth, ratioHeight));
             }
 
         }
@@ -343,34 +343,9 @@ namespace PhotoBeanApp.View
         
         private void ContinueButton_Click(object sender, RoutedEventArgs e)
         {
-            recalculateStickerSize(_stickerList);
             imTemp = RenderManager.RenderIcons(ConvertBitmapImageToBitmap(Photo.Source as BitmapImage), _stickerList);
             ButtonContinueClick?.Invoke(this, EventArgs.Empty);
         }
 
-        private void recalculateStickerSize(List<IconInImage> stickerList)
-        {
-            double imageRealWidth = 0;
-            double imageRealHeight = 0;
-
-            if (Photo.Source is BitmapSource bitmapSource)
-            {
-                imageRealWidth = bitmapSource.PixelWidth;
-                imageRealHeight = bitmapSource.PixelHeight;
-            }
-
-            double ratioWidth = imageRealWidth / Photo.ActualWidth;
-            double ratioHeight = imageRealHeight / Photo.ActualHeight;
-
-
-            foreach (IconInImage icon in stickerList)
-            {
-                int newWidth = (int)(icon.Size.Width * ratioWidth);
-                int newHeight = (int)(icon.Size.Height * ratioHeight);
-
-                // Update the size of the sticker
-                icon.Size = new System.Drawing.Size(newWidth, newHeight);
-            }
-        }
     }
 }

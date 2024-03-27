@@ -15,9 +15,13 @@ namespace PhotoBeanApp.Helper.Classes
         VisualCollection AdornerVisual;
         Thumb thumb2;
         Rectangle Rec;
-        double imageRatio;
-        public ResizeAdorner(UIElement adornedElement) : base(adornedElement)
+        double ratioWidth;
+        double ratioHeight;
+        public ResizeAdorner(UIElement adornedElement, double ratioWidth, double ratioHeight) : base(adornedElement)
         {
+            this.ratioWidth = ratioWidth;
+            this.ratioHeight = ratioHeight;
+
             AdornerVisual = new VisualCollection(this);
             thumb2 = new Thumb() { Background = Brushes.Coral, Height = 10, Width = 10 };
             Rec = new Rectangle() { Stroke = Brushes.Coral, StrokeThickness = 2, StrokeDashArray = { 3, 2 } };
@@ -68,7 +72,7 @@ namespace PhotoBeanApp.Helper.Classes
 
 
             //update temporary sticker size
-            sticker.StickerInfo.Size = new System.Drawing.Size((int)sticker.ActualWidth, (int)sticker.ActualHeight);
+            sticker.StickerInfo.Size = new System.Drawing.Size((int)(sticker.ActualWidth*ratioWidth), (int)(sticker.ActualHeight*ratioHeight));
         }
 
         protected override Visual GetVisualChild(int index)
