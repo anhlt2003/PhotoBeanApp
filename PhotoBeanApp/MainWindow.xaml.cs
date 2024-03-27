@@ -43,8 +43,6 @@ namespace PhotoBeanApp
             WelcomeScreen welcomeScreen = new WelcomeScreen();
             welcomeScreen.StartButtonClick += WelcomeScreen_StartButtonClick;
             contentControl.Content = welcomeScreen;
-            //RealtimeScreen realtimeScreen = new RealtimeScreen();
-            //contentControl.Content = realtimeScreen;
         }
         private void InitializeTimer()
         {

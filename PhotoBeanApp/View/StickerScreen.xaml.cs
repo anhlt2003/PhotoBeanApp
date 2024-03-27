@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
+using System.Net;
 using System.Security.Cryptography;
 using System.Windows;
 using System.Windows.Controls;
@@ -19,6 +20,7 @@ namespace PhotoBeanApp.View
     /// </summary>
     public partial class StickerScreen : UserControl
     {
+
         private List<IconInImage> _stickerList = new List<IconInImage>();
         public StickerScreen(Bitmap photo)
         {
@@ -26,7 +28,7 @@ namespace PhotoBeanApp.View
             string currentDirectory = Directory.GetCurrentDirectory();
             string projectDirectory = Directory.GetParent(currentDirectory).Parent.Parent.FullName;
             string stickerDirectory = Path.Combine(projectDirectory, $"Helper\\Stickers");
-            LoadImagesFromFolder(stickerDirectory);
+            LoadSticker(stickerDirectory);
             Bin.Visibility = Visibility.Hidden;
             Photo.Loaded += Photo_Loaded;
             Photo.Source = ConvertToBitmapSource(photo);
@@ -55,8 +57,9 @@ namespace PhotoBeanApp.View
             canvasSticker.Height = imageHeight;
         }
 
-        private void LoadImagesFromFolder(string folderName)
+        private void LoadSticker(string folderName)
         {
+            System.Windows.Controls.Image image;
             string folderPath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, folderName);
             if (!Directory.Exists(folderPath))
             {
@@ -73,7 +76,7 @@ namespace PhotoBeanApp.View
                 bitmapImage.UriSource = new Uri(imagePath);
                 bitmapImage.EndInit();
 
-                System.Windows.Controls.Image image = new System.Windows.Controls.Image();
+                image = new System.Windows.Controls.Image();
                 image.Source = bitmapImage;
                 image.Width = image.Width / 2;
                 image.Height = 60;
@@ -83,9 +86,18 @@ namespace PhotoBeanApp.View
 
                 wrapPanel.Children.Add(image);
             }
+            image = new System.Windows.Controls.Image();
+            image.Source = GetWeatherIcon("Ho Chi Minh City, VN").Source;
+            image.Width = image.Width / 2;
+            image.Height = 60;
+            image.Stretch = System.Windows.Media.Stretch.Uniform;
+            image.Margin = new Thickness(5);
+            image.MouseLeftButtonDown += Image_MouseLeftButtonDown;
+
+            wrapPanel.Children.Add(image);
         }
 
-        private void Image_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        private void Image_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
 
             System.Windows.Controls.Image clickedImage = sender as System.Windows.Controls.Image;
@@ -98,7 +110,7 @@ namespace PhotoBeanApp.View
 
             stickerInfo.IconBitmap = ConvertBitmapImageToBitmap(clickedImage.Source as BitmapImage);
             stickerInfo.Position = new System.Drawing.Point((int)clickedImage.ActualWidth / 2, (int)clickedImage.ActualHeight / 2);
-            stickerInfo.Size = new System.Drawing.Size((int)clickedImage.Width / 2, 60);
+            stickerInfo.Size = new System.Drawing.Size((int)clickedImage.ActualWidth / 2, 60);
 
             _stickerList.Add(stickerInfo);
 
@@ -114,11 +126,11 @@ namespace PhotoBeanApp.View
             canvasSticker.Children.Add(sticker);
 
         }
-        private void Sticker_MouseLeftButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        private void Sticker_MouseLeftButtonUp(object sender,MouseButtonEventArgs e)
         {
             Bin.Visibility = Visibility.Hidden;
         }
-        private void Sticker_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        private void Sticker_MouseLeftButtonDown(object sender,MouseButtonEventArgs e)
         {
             if (sender is Sticker clickedSticker)
             {
@@ -167,7 +179,6 @@ namespace PhotoBeanApp.View
                     {
                         if (canvasSticker.Children.Contains(draggedSticker))
                         {
-                            //check if drop position is inside image bin
                             if (dropPosition.X >= binX && dropPosition.X <= binX + binWidth &&
                                 dropPosition.Y >= binY && dropPosition.Y <= binY + binHeight)
                             {
@@ -271,7 +282,41 @@ namespace PhotoBeanApp.View
             return bitmap;
         }
 
+        public System.Windows.Controls.Image GetWeatherIcon(string city)
+        {
+            System.Windows.Controls.Image icon = new System.Windows.Controls.Image();
+            try
+            {
+                string apiKey = "b976b9fdcd1f9ddaa0ae7a3ee362df88";
 
+                string url = $"http://api.openweathermap.org/data/2.5/weather?q={WebUtility.UrlEncode(city)}&appid={apiKey}&units=metric";
+
+                using (WebClient client = new WebClient())
+                {
+                    string json = client.DownloadString(url);
+
+                    dynamic result = Newtonsoft.Json.JsonConvert.DeserializeObject(json);
+
+                    double temperature = result.main.temp;
+                    string iconCode = result.weather[0].icon;
+
+                    string iconUrl = $"http://openweathermap.org/img/wn/{iconCode}.png";
+
+                    byte[] iconData = client.DownloadData(iconUrl);
+                    MemoryStream iconStream = new MemoryStream(iconData);
+                    BitmapImage iconImage = new BitmapImage();
+                    iconImage.BeginInit();
+                    iconImage.StreamSource = iconStream;
+                    iconImage.EndInit();
+                    icon.Source = iconImage;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error: " + ex.Message); 
+            }
+            return icon;
+        }
         //test render icon
         //private void renderImage_Click(object sender, RoutedEventArgs e)
         //{
